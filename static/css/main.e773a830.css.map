@@ -1,0 +1,1 @@
+{"version":3,"file":"static/css/main.e773a830.css","mappings":"AAAA,EAGE,qBAAsB,CAFtB,QAAS,CACT,SAEF,CAEA,eAEE,wBAAyB,CADzB,UAEF","sources":["App.css"],"sourcesContent":["* {\n  margin: 0;\n  padding: 0;\n  box-sizing: border-box;\n}\n\n.App-container {\n  width: 100%;\n  background-color: #141414;\n}\n"],"names":[],"sourceRoot":""}
