@@ -1,4 +1,5 @@
 import './App.css';
+import Clicker from './Components/Sections/Clicker';
 
 function App() {
   console.log(window.Telegram.WebApp.initData);
@@ -6,7 +7,7 @@ function App() {
   return (
     <div className="App">
       <div className="App-container">
-        Awesome!!!Awesome!!!Awesome!!!Awesome!!!Awesome!!!Awesome!!!Awesome!!!Awesome!!!Awesome!!!Awesome!!!Awesome!!!Awesome!!!Awesome!!!Awesome!!!Awesome!!!Awesome!!!Awesome!!!Awesome!!!
+        <Clicker />
       </div>
     </div>
   );
