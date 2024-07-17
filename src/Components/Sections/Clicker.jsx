@@ -42,7 +42,7 @@ function Clicker() {
     };
 
     // Рисуем несколько звезд с разными параметрами
-    drawStar(canvasWidth / 2, canvasHeight / 2 - 50, 10, 60, 150);
+    drawStar(canvasWidth / 2 - 50, canvasHeight / 2 - 100, 10, 60, 150);
   }, []);
 
   const drawNewStar = (cx, cy, spikes, outerRadius, innerRadius) => {
