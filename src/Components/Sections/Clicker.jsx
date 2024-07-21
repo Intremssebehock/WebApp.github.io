@@ -203,33 +203,29 @@ function Clicker() {
   };
 
   const clickScreen = () => {
-    cancelAnimationFrame(numbersAnimationID);
+    //cancelAnimationFrame(numbersAnimationID);
 
     if (!isAnimatedStars) {
       setAnimatedStars(true);
       StarsAnimation(centralCanvasRef.current.getContext('2d'));
     }
 
-    const x = Math.random() * dimensions.width;
-    const y = Math.random() * dimensions.height;
-    const alpha = 1;
-    const fontSize = 0;
-    const remove = false;
-    if (numbers.length < 20) {
-      setNumbers([...numbers, { x, y, fontSize, alpha, remove }]);
-    } else {
-      setNumbers((prevNumbers) => {
-        return prevNumbers.slice(5);
-      });
-    }
+    //const x = Math.random() * dimensions.width;
+    //const y = Math.random() * dimensions.height;
+    //const alpha = 1;
+    //const fontSize = 0;
+    //const remove = false;
+    //if (numbers.length < 20) {
+    //  setNumbers([...numbers, { x, y, fontSize, alpha, remove }]);
+    //} else {
+    //  setNumbers((prevNumbers) => {
+    //    return prevNumbers.slice(5);
+    //  });
+    //}
 
-    const id = requestAnimationFrame(NumbersAnimation);
-    setNumbersAnimationID(id);
+    //const id = requestAnimationFrame(NumbersAnimation);
+    //setNumbersAnimationID(id);
   };
-
-  useEffect(() => {
-    console.log(numbers);
-  }, [numbers]);
 
   return (
     <div className="Clicker-container">
