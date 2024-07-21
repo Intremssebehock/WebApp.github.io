@@ -215,11 +215,11 @@ function Clicker() {
     const alpha = 1;
     const fontSize = 0;
     const remove = false;
-    if (numbers.length < 20) {
+    if (numbers.length < 5) {
       setNumbers([...numbers, { x, y, fontSize, alpha, remove }]);
     } else {
       setNumbers((prevNumbers) => {
-        return prevNumbers.slice(5);
+        return prevNumbers.slice(1);
       });
     }
 
