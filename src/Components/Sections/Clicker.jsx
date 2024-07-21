@@ -182,7 +182,7 @@ function Clicker() {
       number.alpha -= 0.01;
     });
 
-    //setNumbers(numbers.filter((number) => number.fontSize > -50));
+    cancelAnimationFrame(numbersAnimationID);
 
     const id = requestAnimationFrame(NumbersAnimation);
     setNumbersAnimationID(id);
@@ -203,23 +203,23 @@ function Clicker() {
   };
 
   const clickScreen = () => {
+    cancelAnimationFrame(numbersAnimationID);
+
     if (!isAnimatedStars) {
       setAnimatedStars(true);
       StarsAnimation(centralCanvasRef.current.getContext('2d'));
     }
-
-    cancelAnimationFrame(numbersAnimationID);
 
     const x = Math.random() * dimensions.width;
     const y = Math.random() * dimensions.height;
     const alpha = 1;
     const fontSize = 0;
     const remove = false;
-    if (numbers.length < 5) {
+    if (numbers.length < 20) {
       setNumbers([...numbers, { x, y, fontSize, alpha, remove }]);
     } else {
       setNumbers((prevNumbers) => {
-        return prevNumbers.slice(1);
+        return prevNumbers.slice(5);
       });
     }
 
