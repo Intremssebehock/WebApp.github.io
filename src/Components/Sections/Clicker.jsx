@@ -2,10 +2,11 @@ import React, { useRef, useEffect, useState } from 'react';
 import './Section.css';
 
 function Clicker() {
-  const canvasRef = useRef(null);
+  const frontCanvasRef = useRef(null);
+  const centralCanvasRef = useRef(null);
   const [numberIsDraw, setNumberDraw] = useState(false);
   const [isAnimated, setAnimated] = useState(false);
-  const [animationID, setAnimationID] = useState();
+  const [StarsanimationID, setStarsAnimationID] = useState();
   const [dimensions, setDimensions] = useState({
     width: window.innerWidth,
     height: window.innerHeight,
@@ -70,6 +71,7 @@ function Clicker() {
       transparency: 0.1,
     },
   ];
+  const [numbers, setNumbers] = useState([]);
 
   useEffect(() => {
     const resizeCanvas = () => {
@@ -80,10 +82,13 @@ function Clicker() {
     };
     resizeCanvas();
 
-    const canvas = canvasRef.current;
-    canvas.width = dimensions.width;
-    canvas.height = dimensions.height;
-    Animation(canvasRef.current.getContext('2d'));
+    const centralCanvas = centralCanvasRef.current;
+    centralCanvas.width = dimensions.width;
+    centralCanvas.height = dimensions.height;
+    const frontCanvas = frontCanvasRef.current;
+    frontCanvas.width = dimensions.width;
+    frontCanvas.height = dimensions.height;
+    requestAnimationFrame(() => StarsAnimation(centralCanvas.getContext('2d')));
 
     window.addEventListener('resize', resizeCanvas);
 
@@ -92,15 +97,9 @@ function Clicker() {
     };
   }, [window.innerWidth]);
 
-  const Animation = (ctx) => {
+  const StarsAnimation = (ctx) => {
     ctx.clearRect(0, 0, dimensions.width, dimensions.height);
     drawStar(true, ctx, dimensions.width / 2, dimensions.height / 2, 20, 95, 145);
-    if (numberIsDraw === true) {
-      setNumberDraw(true);
-    } else {
-      drawRandomNumberWithShadow(canvasRef.current.getContext('2d'), canvasRef.current);
-      setNumberDraw(true);
-    }
 
     for (let i = 0; i < stars.length; i++) {
       drawStar(
@@ -121,23 +120,46 @@ function Clicker() {
         stars[i].outerRadius = 100;
         stars[i].innerRadius = 150;
         stars[i].transparency = 0.5;
-        StopAnimation();
+        setAnimated(false);
+        cancelAnimationFrame(StarsanimationID);
         return;
       }
     }
 
-    const id = requestAnimationFrame(() => Animation(ctx));
-    setAnimationID(id);
+    const id = requestAnimationFrame(() => StarsAnimation(ctx));
+    setStarsAnimationID(id);
   };
 
-  const StopAnimation = () => {
-    setAnimated(false);
-    cancelAnimationFrame(animationID);
-  };
+  const NumbersAnimation = (x, y) => {
+    const frontCanvas = frontCanvasRef.current;
+    const ctx = frontCanvas.getContext('2d');
 
-  const StartAnimation = () => {
-    setAnimated(true);
-    Animation(canvasRef.current.getContext('2d'));
+    const duration = 500; // Продолжительность анимации в миллисекундах
+    const startTime = performance.now();
+    const maxScale = 2;
+
+    const animate = (time) => {
+      const elapsed = time - startTime;
+      const progress = Math.min(elapsed / duration, 1);
+      const scale = 1 + maxScale * Math.sin(progress * Math.PI); // Увеличение и уменьшение
+      const alpha = 1 - progress;
+
+      drawNumber(ctx, x, y, scale, alpha);
+
+      if (progress < 1) {
+        requestAnimationFrame(animate);
+      } else {
+        setNumberDraw(false);
+      }
+    };
+
+    if (!numberIsDraw) {
+      setNumberDraw(true);
+      requestAnimationFrame(animate);
+    } else {
+      // Если уже идет анимация, добавляем новое событие в очередь
+      setNumbers([...numbers, { x, y }]);
+    }
   };
 
   const drawStar = (isMainStar, ctx, cx, cy, spikes, outerRadius, innerRadius, transparency) => {
@@ -175,37 +197,32 @@ function Clicker() {
     }
   };
 
-  const drawRandomNumberWithShadow = (ctx, canvas) => {
-    // Получаем случайную точку на canvas
-    const x = 100;
-    const y = 100;
+  const drawNumber = (ctx, x, y, scale, alpha) => {
+    ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height);
+    ctx.globalAlpha = alpha;
+    ctx.font = `${scale * 50}px Erica One`; // Размер шрифта меняется в зависимости от масштаба
+    ctx.textAlign = 'center';
+    ctx.textBaseline = 'middle';
+    ctx.fillStyle = '#EDC70C';
+    ctx.fillText('+5', x, y);
+  };
 
-    // Устанавливаем тень
-    ctx.shadowColor = 'rgba(0, 0, 0, 0.5)';
-    ctx.shadowBlur = 10;
-    ctx.shadowOffsetX = 4;
-    ctx.shadowOffsetY = 4;
+  const clickScreen = () => {
+    if (!isAnimated) {
+      setAnimated(true);
+      StarsAnimation(centralCanvasRef.current.getContext('2d'));
+    }
 
-    // Устанавливаем стиль текста
-    ctx.fillStyle = 'white'; // Цвет текста
-    ctx.font = '32px Arial'; // Размер и шрифт текста
-
-    // Рисуем цифру "1"
-    ctx.fillText('1', x, y);
-
-    // Сбрасываем тень после рисования
-    ctx.shadowColor = 'transparent';
-    ctx.shadowBlur = 0;
-    ctx.shadowOffsetX = 0;
-    ctx.shadowOffsetY = 0;
+    const x = Math.random() * dimensions.width;
+    const y = Math.random() * dimensions.height;
+    NumbersAnimation(x, y);
+    setNumbers([...numbers, { x, y }]);
   };
 
   return (
     <div className="Clicker-container">
-      <canvas
-        onClick={() => (isAnimated ? '' : StartAnimation())}
-        ref={canvasRef}
-        className="Clicker-canvas"></canvas>
+      <canvas onClick={clickScreen} ref={centralCanvasRef} className="central-canvas" />
+      <canvas ref={frontCanvasRef} className="front-canvas" />
     </div>
   );
 }
