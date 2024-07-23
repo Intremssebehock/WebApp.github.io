@@ -7,7 +7,7 @@
 .central-canvas {
   position: absolute;
   background-color: transparent;
-  z-index: 0;
+  z-index: 1;
   align-items: center;
 }
 
@@ -15,5 +15,12 @@
   position: absolute;
   background-color: transparent;
   z-index: 2;
+  pointer-events: none;
+}
+
+.back-canvas {
+  position: absolute;
+  background-color: transparent;
+  z-index: 0;
   pointer-events: none;
 }

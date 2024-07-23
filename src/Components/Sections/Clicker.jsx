@@ -4,6 +4,7 @@ import './Section.css';
 function Clicker() {
   const frontCanvasRef = useRef(null);
   const centralCanvasRef = useRef(null);
+  const backCanvasRef = useRef(null);
   const [numbersIsDrawCount, setNumbersDrawCount] = useState(0);
   const [isAnimatedStars, setAnimatedStars] = useState(false);
   const [isAnimatedNumbers, setAnimatedNumbers] = useState(false);
@@ -76,11 +77,11 @@ function Clicker() {
     },
   ];
   const [numbers, setNumbers] = useState([
-    { x: 343.0709342736543, y: 187.04862429619095, fontSize: -10, alpha: 1 },
-    { x: 1.8369408027639111, y: 567.250135457437, fontSize: 0, alpha: 1 },
-    { x: 85.13655967078292, y: 399.7830084698819, fontSize: -40, alpha: 1 },
-    { x: 234.8369408027639111, y: 367.250135457437, fontSize: -60, alpha: 1 },
-    { x: 85.13655967078292, y: 399.7830084698819, fontSize: -40, alpha: 1 },
+    { x: 343, y: 187, fontSize: -10, alpha: 1, isBackground: false },
+    { x: 142, y: 267, fontSize: 0, alpha: 1, isBackground: false },
+    { x: 85, y: 399, fontSize: -40, alpha: 1, isBackground: true },
+    { x: 234, y: 367, fontSize: -60, alpha: 1, isBackground: false },
+    { x: 85, y: 399, fontSize: -40, alpha: 1, isBackground: true },
   ]);
 
   useEffect(() => {
@@ -103,6 +104,10 @@ function Clicker() {
     frontCanvas.width = dimensions.width;
     frontCanvas.height = dimensions.height;
 
+    const backCanvas = backCanvasRef.current;
+    backCanvas.width = dimensions.width;
+    backCanvas.height = dimensions.height;
+
     StarsAnimation();
 
     window.addEventListener('resize', resizeCanvas);
@@ -119,7 +124,7 @@ function Clicker() {
     const ctx = centralCanvas.getContext('2d');
     ctx.clearRect(0, 0, dimensions.width, dimensions.height);
 
-    drawStar(true, ctx, dimensions.width / 2, dimensions.height / 2, 20, 95, 145);
+    drawStar(true, ctx, dimensions.width / 2, dimensions.height / 2, 20, 90, 140);
 
     for (let i = 0; i < stars.length; i++) {
       drawStar(
@@ -191,10 +196,14 @@ function Clicker() {
 
     if (isMainStar) {
       // Основной стиль звезды
+      const gradientStar = ctx.createLinearGradient(cx, cy - 50, cx, cy + 70); // Градиент сверху вниз
+      gradientStar.addColorStop(0, '#edc70c'); // Цвет вверху
+      gradientStar.addColorStop(1, '#b59912'); // Цвет внизу
+
       ctx.lineWidth = 7;
       ctx.strokeStyle = '#FFDB26';
       ctx.stroke();
-      ctx.fillStyle = '#EDC70C';
+      ctx.fillStyle = gradientStar;
       ctx.fill();
 
       // Рисование текста
@@ -202,12 +211,12 @@ function Clicker() {
       ctx.textAlign = 'center';
       ctx.textBaseline = 'middle';
 
-      const gradient = ctx.createLinearGradient(cx, cy - 90, cx, cy - 2); // Градиент сверху вниз
-      gradient.addColorStop(0, '#161303'); // Цвет вверху
-      gradient.addColorStop(1, '#AC9318'); // Цвет внизу
+      const gradientText = ctx.createLinearGradient(cx, cy - 95, cx, cy - 10); // Градиент сверху вниз
+      gradientText.addColorStop(0, '#161303'); // Цвет вверху
+      gradientText.addColorStop(1, '#AC9318'); // Цвет внизу
 
       // Рисуем текст с градиентом
-      ctx.fillStyle = gradient; // Устанавливаем градиент как цвет заливки
+      ctx.fillStyle = gradientText; // Устанавливаем градиент как цвет заливки
       ctx.fillText('+5', cx, cy); // Рисуем текст
     } else {
       // Стиль для второстепенных звезд
@@ -220,14 +229,35 @@ function Clicker() {
   const NumbersAnimation = () => {
     const frontCanvas = frontCanvasRef.current;
     const ctxFront = frontCanvas.getContext('2d');
+    const backCanvas = backCanvasRef.current;
+    const ctxBack = backCanvas.getContext('2d');
     ctxFront.clearRect(0, 0, ctxFront.canvas.width, ctxFront.canvas.height);
+    ctxBack.clearRect(0, 0, ctxFront.canvas.width, ctxFront.canvas.height);
     let count = 0;
     numbers.forEach((number, index) => {
       if (number.fontSize > 0) {
-        drawNumber(ctxFront, number.x, number.y, number.fontSize, number.alpha);
+        if (number.isBackground) {
+          drawNumber(
+            ctxBack,
+            number.x,
+            number.y,
+            number.fontSize,
+            number.alpha,
+            number.isBackground,
+          );
+        } else {
+          drawNumber(
+            ctxFront,
+            number.x,
+            number.y,
+            number.fontSize,
+            number.alpha,
+            number.isBackground,
+          );
+        }
         number.alpha -= 0.03;
       }
-      number.fontSize += 3;
+      number.fontSize += 2;
       if (number.alpha <= 0) {
         count += 1;
       }
@@ -235,8 +265,8 @@ function Clicker() {
 
     if (count >= MaxNumbersCount) {
       numbers.forEach((number, index) => {
-        number.x = Math.floor(100 + Math.random() * (dimensions.width - 99 - 100));
-        number.y = Math.floor(200 + Math.random() * (dimensions.height - 99 - 200));
+        number.x = Math.random() * dimensions.width;
+        number.y = Math.random() * dimensions.height;
         number.alpha = 1;
         number.fontSize = Math.floor(-50 + Math.random() * (0 + 1 - -50));
       });
@@ -250,22 +280,28 @@ function Clicker() {
     setNumbersAnimationID(id);
   };
 
-  const drawNumber = (ctx, x, y, fontSize, alpha) => {
+  const drawNumber = (ctx, x, y, fontSize, alpha, isBackground) => {
     // Настройка тени
-    ctx.shadowColor = '#000'; // Цвет тени
-    ctx.shadowBlur = 10; // Размытие тени
-    ctx.shadowOffsetX = 3; // Смещение тени по X
-    ctx.shadowOffsetY = 3; // Смещение тени по Y
+    if (!isBackground) {
+      ctx.shadowColor = '#000'; // Цвет тени
+      ctx.shadowBlur = 10; // Размытие тени
+      ctx.shadowOffsetX = 3; // Смещение тени по X
+      ctx.shadowOffsetY = 3; // Смещение тени по Y
+    }
 
     ctx.font = `${fontSize}px Erica One`; // Используйте свой шрифт здесь
     ctx.textAlign = 'center';
     ctx.textBaseline = 'middle';
-    ctx.fillStyle = `rgba(237, 199, 12, ${alpha})`; // Цвет текста
+    if (isBackground) {
+      ctx.fillStyle = `rgba(76, 66, 16, ${alpha})`; // Цвет текста
+    } else {
+      ctx.fillStyle = `rgba(237, 199, 12, ${alpha})`; // Цвет текста
+    }
     ctx.fillText('+5', x, y);
   };
 
   useEffect(() => {
-    console.log(numbersAnimationID);
+    //console.log(numbersAnimationID);
   }, [numbersAnimationID]);
 
   const clickScreen = () => {
@@ -282,6 +318,11 @@ function Clicker() {
 
   return (
     <div className="Clicker-container">
+      <canvas
+        style={{ width: '100vw', height: '100vh' }}
+        ref={backCanvasRef}
+        className="back-canvas"
+      />
       <canvas
         style={{ width: '100vw', height: '100vh' }}
         onClick={clickScreen}
