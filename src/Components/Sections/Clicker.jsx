@@ -150,6 +150,22 @@ function Clicker() {
     let y = cy;
     const step = Math.PI / spikes;
 
+    // Если это главная звезда, сначала нарисуйте свет за звездой
+    if (isMainStar) {
+      // Рисование света за звездой
+      const lightRadius = outerRadius * 4; // Увеличиваем радиус света
+      const lightGradient = ctx.createRadialGradient(cx, cy, 10, cx, cy, lightRadius); // Радиальный градиент
+      lightGradient.addColorStop(0, 'rgba(255, 255, 0, 0.4)'); // Желтый свет в центре
+      lightGradient.addColorStop(0.4, 'rgba(255, 255, 0, 0.18)'); // Желтый свет в центре
+      lightGradient.addColorStop(0.8, 'rgba(255, 255, 0, 0.04)'); // Желтый свет в центре
+      lightGradient.addColorStop(1, 'rgba(255, 255, 0, 0)'); // Прозрачный по краям
+
+      ctx.beginPath();
+      ctx.arc(cx, cy, lightRadius, 0, Math.PI * 2, false); // Увеличиваем радиус круга для света
+      ctx.fillStyle = lightGradient;
+      ctx.fill();
+    }
+
     ctx.strokeStyle = '#000';
     ctx.beginPath();
     ctx.moveTo(cx, cy - outerRadius);
@@ -176,16 +192,16 @@ function Clicker() {
       ctx.fill();
 
       // Рисование текста
-      ctx.font = 'bold 70px Erica One'; // Настроить шрифт и размер
+      ctx.font = 'bold 80px Erica One'; // Настроить шрифт и размер
       ctx.textAlign = 'center';
       ctx.textBaseline = 'middle';
 
-      // Создание эффекта внутренней тени
-      //ctx.shadowColor = 'rgba(0, 0, 0, 0.5)'; // Цвет тени
-      //ctx.shadowBlur = 6; // Размытие тени
+      const gradient = ctx.createLinearGradient(cx, cy - 90, cx, cy - 2); // Градиент сверху вниз
+      gradient.addColorStop(0, '#161303'); // Цвет вверху
+      gradient.addColorStop(1, '#AC9318'); // Цвет внизу
 
-      // Рисуем текст с тенями
-      ctx.fillStyle = '#AC9318'; // Цвет текста
+      // Рисуем текст с градиентом
+      ctx.fillStyle = gradient; // Устанавливаем градиент как цвет заливки
       ctx.fillText('+5', cx, cy); // Рисуем текст
     } else {
       // Стиль для второстепенных звезд
