@@ -1,13 +1,14 @@
 .Clicker-container {
   width: 100vw;
   height: 100vh;
-  background-color: #141414;
+  display: flex;
 }
 
 .central-canvas {
   position: absolute;
   background-color: transparent;
   z-index: 0;
+  align-items: center;
 }
 
 .front-canvas {

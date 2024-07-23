@@ -93,12 +93,17 @@ function Clicker() {
     resizeCanvas();
 
     const centralCanvas = centralCanvasRef.current;
-    centralCanvas.width = dimensions.width;
-    centralCanvas.height = dimensions.height;
+    centralCanvas.width = dimensions.width * 2;
+    centralCanvas.height = dimensions.height * 2;
+    centralCanvas.style.width = dimensions.width;
+    centralCanvas.style.height = dimensions.height;
+    centralCanvas.getContext('2d').scale(2, 2);
+
     const frontCanvas = frontCanvasRef.current;
     frontCanvas.width = dimensions.width;
     frontCanvas.height = dimensions.height;
-    requestAnimationFrame(StarsAnimation);
+
+    StarsAnimation();
 
     window.addEventListener('resize', resizeCanvas);
 
@@ -113,6 +118,7 @@ function Clicker() {
     const centralCanvas = centralCanvasRef.current;
     const ctx = centralCanvas.getContext('2d');
     ctx.clearRect(0, 0, dimensions.width, dimensions.height);
+
     drawStar(true, ctx, dimensions.width / 2, dimensions.height / 2, 20, 95, 145);
 
     for (let i = 0; i < stars.length; i++) {
@@ -185,7 +191,7 @@ function Clicker() {
 
     if (isMainStar) {
       // Основной стиль звезды
-      ctx.lineWidth = 5;
+      ctx.lineWidth = 7;
       ctx.strokeStyle = '#FFDB26';
       ctx.stroke();
       ctx.fillStyle = '#EDC70C';
@@ -213,12 +219,12 @@ function Clicker() {
 
   const NumbersAnimation = () => {
     const frontCanvas = frontCanvasRef.current;
-    const ctx = frontCanvas.getContext('2d');
-    ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height);
+    const ctxFront = frontCanvas.getContext('2d');
+    ctxFront.clearRect(0, 0, ctxFront.canvas.width, ctxFront.canvas.height);
     let count = 0;
     numbers.forEach((number, index) => {
       if (number.fontSize > 0) {
-        drawNumber(ctx, number.x, number.y, number.fontSize, number.alpha);
+        drawNumber(ctxFront, number.x, number.y, number.fontSize, number.alpha);
         number.alpha -= 0.03;
       }
       number.fontSize += 3;
@@ -229,14 +235,14 @@ function Clicker() {
 
     if (count >= MaxNumbersCount) {
       numbers.forEach((number, index) => {
-        number.x = Math.floor(100 + Math.random() * (dimensions.width + 1 - 100));
-        number.y = Math.floor(200 + Math.random() * (dimensions.height + 1 - 200));
+        number.x = Math.floor(100 + Math.random() * (dimensions.width - 99 - 100));
+        number.y = Math.floor(200 + Math.random() * (dimensions.height - 99 - 200));
         number.alpha = 1;
         number.fontSize = Math.floor(-50 + Math.random() * (0 + 1 - -50));
       });
       cancelAnimationFrame(numbersAnimationID);
       setAnimatedNumbers(false);
-      ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height);
+      ctxFront.clearRect(0, 0, ctxFront.canvas.width, ctxFront.canvas.height);
       return;
     }
 
@@ -276,8 +282,17 @@ function Clicker() {
 
   return (
     <div className="Clicker-container">
-      <canvas onClick={clickScreen} ref={centralCanvasRef} className="central-canvas" />
-      <canvas ref={frontCanvasRef} className="front-canvas" />
+      <canvas
+        style={{ width: '100vw', height: '100vh' }}
+        onClick={clickScreen}
+        ref={centralCanvasRef}
+        className="central-canvas"
+      />
+      <canvas
+        style={{ width: '100vw', height: '100vh' }}
+        ref={frontCanvasRef}
+        className="front-canvas"
+      />
     </div>
   );
 }
