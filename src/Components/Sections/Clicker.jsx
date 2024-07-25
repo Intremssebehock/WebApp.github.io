@@ -10,15 +10,23 @@ function Clicker() {
   const [isAnimatedNumbers, setAnimatedNumbers] = useState(false);
   const [starsAnimationID, setStarsAnimationID] = useState();
   const [numbersAnimationID, setNumbersAnimationID] = useState();
-
   const [dimensions, setDimensions] = useState({
     width: window.innerWidth,
     height: window.innerHeight,
   });
+  const [mainStar, setMainStar] = useState({
+    cx: dimensions.width / 2,
+    cy: dimensions.height / 2,
+    spikes: 20,
+    outerRadius: 90,
+    innerRadius: 140,
+    transparency: 1,
+  });
 
-  const MaxOuterRadius = 220;
+  const [globalTransparencyDecrement, setGlobalTransparencyDecrement] = useState();
+  const MaxOuterRadius = 300;
   const MaxNumbersCount = 5;
-  let stars = [
+  /*   let stars = [
     {
       cx: dimensions.width / 2,
       cy: dimensions.height / 2,
@@ -75,7 +83,8 @@ function Clicker() {
       innerRadius: 270,
       transparency: 0.1,
     },
-  ];
+  ]; */
+  const [stars, setStars] = useState([]); // Состояние для массива звёзд
   const [numbers, setNumbers] = useState([
     { x: 343, y: 187, fontSize: -10, alpha: 1, isBackground: false },
     { x: 142, y: 267, fontSize: 0, alpha: 1, isBackground: false },
@@ -83,6 +92,30 @@ function Clicker() {
     { x: 234, y: 367, fontSize: -60, alpha: 1, isBackground: false },
     { x: 85, y: 399, fontSize: -40, alpha: 1, isBackground: true },
   ]);
+
+  const generateStars = (starCount, outerRadiusIncrement, innerRadiusIncrement) => {
+    const baseStar = { ...mainStar };
+    const transparencyDecrement = (starCount / 10) * 0.1;
+    setGlobalTransparencyDecrement(transparencyDecrement);
+
+    let generatedStars = [];
+    for (let i = 0; i < starCount; i++) {
+      const outerRadius = baseStar.outerRadius + i * outerRadiusIncrement;
+      const innerRadius = baseStar.innerRadius + i * innerRadiusIncrement;
+      const transparency = 1 - transparencyDecrement * i;
+
+      generatedStars.push({
+        cx: baseStar.cx,
+        cy: baseStar.cy,
+        spikes: baseStar.spikes,
+        outerRadius,
+        innerRadius,
+        transparency,
+      });
+    }
+
+    setStars(generatedStars); // Обновляем состояние звёзд
+  };
 
   useEffect(() => {
     const resizeCanvas = () => {
@@ -92,7 +125,7 @@ function Clicker() {
       });
     };
     resizeCanvas();
-
+    generateStars(10, 20, 20);
     const centralCanvas = centralCanvasRef.current;
     centralCanvas.width = dimensions.width * 2;
     centralCanvas.height = dimensions.height * 2;
@@ -108,8 +141,6 @@ function Clicker() {
     backCanvas.width = dimensions.width;
     backCanvas.height = dimensions.height;
 
-    StarsAnimation();
-
     window.addEventListener('resize', resizeCanvas);
 
     return () => {
@@ -120,11 +151,23 @@ function Clicker() {
   }, [window.innerWidth]);
 
   const StarsAnimation = () => {
+    if (stars.length === 0) {
+      return;
+    }
+    let continueAnim = true;
     const centralCanvas = centralCanvasRef.current;
     const ctx = centralCanvas.getContext('2d');
     ctx.clearRect(0, 0, dimensions.width, dimensions.height);
 
-    drawStar(true, ctx, dimensions.width / 2, dimensions.height / 2, 20, 90, 140);
+    drawStar(
+      true,
+      ctx,
+      mainStar.cx,
+      mainStar.cy,
+      mainStar.spikes,
+      mainStar.outerRadius,
+      mainStar.innerRadius,
+    );
 
     for (let i = 0; i < stars.length; i++) {
       drawStar(
@@ -138,21 +181,27 @@ function Clicker() {
         stars[i].transparency,
       );
 
-      stars[i].outerRadius += 2;
-      stars[i].innerRadius += 2.3;
-
-      if (stars[i].outerRadius === MaxOuterRadius) {
-        stars[i].outerRadius = 100;
-        stars[i].innerRadius = 150;
-        stars[i].transparency = 0.5;
-        setAnimatedStars(false);
-        cancelAnimationFrame(starsAnimationID);
-        return;
+      if (stars[i].outerRadius >= MaxOuterRadius) {
+        stars[i].outerRadius = mainStar.outerRadius + 10;
+        stars[i].innerRadius = mainStar.innerRadius + 10;
+        stars[i].transparency = 1;
+        continueAnim = false;
+      } else {
+        stars[i].outerRadius += 2;
+        stars[i].innerRadius += 2.3;
+        stars[i].transparency -= globalTransparencyDecrement * 0.1;
       }
     }
 
-    const id = requestAnimationFrame(() => StarsAnimation(ctx));
-    setStarsAnimationID(id);
+    if (continueAnim) {
+      cancelAnimationFrame(starsAnimationID);
+      const id = requestAnimationFrame(StarsAnimation);
+      setStarsAnimationID(id);
+    } else {
+      setAnimatedStars(false);
+      cancelAnimationFrame(starsAnimationID);
+      return;
+    }
   };
 
   const drawStar = (isMainStar, ctx, cx, cy, spikes, outerRadius, innerRadius, transparency) => {
@@ -219,7 +268,6 @@ function Clicker() {
       ctx.fillStyle = gradientText; // Устанавливаем градиент как цвет заливки
       ctx.fillText('+5', cx, cy); // Рисуем текст
     } else {
-      // Стиль для второстепенных звезд
       ctx.lineWidth = 1;
       ctx.strokeStyle = `rgba(82, 82, 82, ${transparency})`;
       ctx.stroke();
@@ -255,7 +303,7 @@ function Clicker() {
             number.isBackground,
           );
         }
-        number.alpha -= 0.03;
+        number.alpha -= globalTransparencyDecrement / 4;
       }
       number.fontSize += 2;
       if (number.alpha <= 0) {
@@ -301,8 +349,12 @@ function Clicker() {
   };
 
   useEffect(() => {
-    //console.log(numbersAnimationID);
-  }, [numbersAnimationID]);
+    StarsAnimation();
+  }, [stars]);
+
+  useEffect(() => {
+    console.log(stars);
+  }, [starsAnimationID]);
 
   const clickScreen = () => {
     if (!isAnimatedStars) {
