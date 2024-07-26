@@ -297,7 +297,7 @@ function Clicker() {
   };
 
   const updateScore = () => {
-    dispatch(increment(100000));
+    dispatch(increment(5));
   };
 
   useEffect(() => {
@@ -307,13 +307,13 @@ function Clicker() {
   useEffect(() => {
     switch (true) {
       case score >= 1000000:
-        totalScoreRef.current.style.fontSize = '75px';
+        totalScoreRef.current.style.fontSize = '60px';
         break;
       case score >= 100000:
-        totalScoreRef.current.style.fontSize = '80px';
+        totalScoreRef.current.style.fontSize = '70px';
         break;
       case score >= 10000:
-        totalScoreRef.current.style.fontSize = '90px';
+        totalScoreRef.current.style.fontSize = '80px';
         break;
       case score >= 1000:
         totalScoreRef.current.style.fontSize = '110px';
