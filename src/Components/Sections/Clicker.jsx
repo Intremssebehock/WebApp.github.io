@@ -6,6 +6,7 @@ import { increment } from '../../Redux/Slices/ScoreSlice';
 function Clicker() {
   const score = useSelector((state) => state.score.scoreValue);
   const dispatch = useDispatch();
+  const totalScoreRef = useRef(null);
   const frontCanvasRef = useRef(null);
   const centralCanvasRef = useRef(null);
   const backCanvasRef = useRef(null);
@@ -20,7 +21,7 @@ function Clicker() {
   });
   const [mainStar, setMainStar] = useState({
     cx: dimensions.width / 2,
-    cy: dimensions.height / 2 + 30,
+    cy: dimensions.height / 2 + 100,
     spikes: 20,
     outerRadius: 90,
     innerRadius: 140,
@@ -296,7 +297,7 @@ function Clicker() {
   };
 
   const updateScore = () => {
-    dispatch(increment(5));
+    dispatch(increment(100000));
   };
 
   useEffect(() => {
@@ -304,7 +305,23 @@ function Clicker() {
   }, [stars]);
 
   useEffect(() => {
-    console.log(score);
+    switch (true) {
+      case score >= 1000000:
+        totalScoreRef.current.style.fontSize = '75px';
+        break;
+      case score >= 100000:
+        totalScoreRef.current.style.fontSize = '80px';
+        break;
+      case score >= 10000:
+        totalScoreRef.current.style.fontSize = '90px';
+        break;
+      case score >= 1000:
+        totalScoreRef.current.style.fontSize = '110px';
+        break;
+      default:
+        totalScoreRef.current.style.fontSize = '150px';
+        break;
+    }
   }, [score]);
 
   const clickScreen = () => {
@@ -323,6 +340,9 @@ function Clicker() {
 
   return (
     <div className="Clicker-container">
+      <p ref={totalScoreRef} className="total-score">
+        {score}°
+      </p>
       <canvas
         style={{ width: '100vw', height: '100vh' }}
         ref={backCanvasRef}

@@ -24,3 +24,15 @@
   z-index: 0;
   pointer-events: none;
 }
+
+.total-score {
+  position: absolute;
+  margin-left: auto;
+  margin-right: auto;
+  left: 0;
+  right: 0;
+  top: 100px;
+  text-align: center;
+  font-family: 'Erica One';
+  z-index: 2;
+}

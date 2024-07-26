@@ -9,8 +9,7 @@ export const ScoreSlice = createSlice({
   initialState,
   reducers: {
     increment: (state, actions) => {
-      state.score += actions.payload;
-      console.log(state.score);
+      state.scoreValue += actions.payload;
     },
   },
 });
