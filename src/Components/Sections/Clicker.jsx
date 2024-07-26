@@ -1,7 +1,11 @@
 import React, { useRef, useEffect, useState } from 'react';
 import './Section.css';
+import { useSelector, useDispatch } from 'react-redux';
+import { increment } from '../../Redux/Slices/ScoreSlice';
 
 function Clicker() {
+  const score = useSelector((state) => state.score.scoreValue);
+  const dispatch = useDispatch();
   const frontCanvasRef = useRef(null);
   const centralCanvasRef = useRef(null);
   const backCanvasRef = useRef(null);
@@ -16,7 +20,7 @@ function Clicker() {
   });
   const [mainStar, setMainStar] = useState({
     cx: dimensions.width / 2,
-    cy: dimensions.height / 2,
+    cy: dimensions.height / 2 + 30,
     spikes: 20,
     outerRadius: 90,
     innerRadius: 140,
@@ -24,66 +28,8 @@ function Clicker() {
   });
 
   const [globalTransparencyDecrement, setGlobalTransparencyDecrement] = useState();
-  const MaxOuterRadius = 300;
-  const MaxNumbersCount = 5;
-  /*   let stars = [
-    {
-      cx: dimensions.width / 2,
-      cy: dimensions.height / 2,
-      spikes: 20,
-      outerRadius: 100,
-      innerRadius: 150,
-      transparency: 0.5,
-    },
-    {
-      cx: dimensions.width / 2,
-      cy: dimensions.height / 2,
-      spikes: 20,
-      outerRadius: 120,
-      innerRadius: 170,
-      transparency: 0.5,
-    },
-    {
-      cx: dimensions.width / 2,
-      cy: dimensions.height / 2,
-      spikes: 20,
-      outerRadius: 140,
-      innerRadius: 190,
-      transparency: 0.5,
-    },
-    {
-      cx: dimensions.width / 2,
-      cy: dimensions.height / 2,
-      spikes: 20,
-      outerRadius: 160,
-      innerRadius: 210,
-      transparency: 0.4,
-    },
-    {
-      cx: dimensions.width / 2,
-      cy: dimensions.height / 2,
-      spikes: 20,
-      outerRadius: 180,
-      innerRadius: 230,
-      transparency: 0.3,
-    },
-    {
-      cx: dimensions.width / 2,
-      cy: dimensions.height / 2,
-      spikes: 20,
-      outerRadius: 200,
-      innerRadius: 250,
-      transparency: 0.2,
-    },
-    {
-      cx: dimensions.width / 2,
-      cy: dimensions.height / 2,
-      spikes: 20,
-      outerRadius: 220,
-      innerRadius: 270,
-      transparency: 0.1,
-    },
-  ]; */
+  const [maxOuterRadius, setMaxOuterRadius] = useState(300);
+  const [maxNumbersCount, setMaxNumbersCount] = useState(5);
   const [stars, setStars] = useState([]); // Состояние для массива звёзд
   const [numbers, setNumbers] = useState([
     { x: 343, y: 187, fontSize: -10, alpha: 1, isBackground: false },
@@ -95,7 +41,7 @@ function Clicker() {
 
   const generateStars = (starCount, outerRadiusIncrement, innerRadiusIncrement) => {
     const baseStar = { ...mainStar };
-    const transparencyDecrement = (starCount / 10) * 0.1;
+    const transparencyDecrement = (10 / starCount) * 0.1;
     setGlobalTransparencyDecrement(transparencyDecrement);
 
     let generatedStars = [];
@@ -113,6 +59,7 @@ function Clicker() {
         transparency,
       });
     }
+    setMaxOuterRadius(generatedStars[starCount - 1].outerRadius + 30);
 
     setStars(generatedStars); // Обновляем состояние звёзд
   };
@@ -125,7 +72,7 @@ function Clicker() {
       });
     };
     resizeCanvas();
-    generateStars(10, 20, 20);
+    generateStars(15, 30, 30);
     const centralCanvas = centralCanvasRef.current;
     centralCanvas.width = dimensions.width * 2;
     centralCanvas.height = dimensions.height * 2;
@@ -181,7 +128,7 @@ function Clicker() {
         stars[i].transparency,
       );
 
-      if (stars[i].outerRadius >= MaxOuterRadius) {
+      if (stars[i].outerRadius >= maxOuterRadius) {
         stars[i].outerRadius = mainStar.outerRadius + 10;
         stars[i].innerRadius = mainStar.innerRadius + 10;
         stars[i].transparency = 1;
@@ -214,11 +161,11 @@ function Clicker() {
     if (isMainStar) {
       // Рисование света за звездой
       const lightRadius = outerRadius * 4; // Увеличиваем радиус света
-      const lightGradient = ctx.createRadialGradient(cx, cy, 10, cx, cy, lightRadius); // Радиальный градиент
-      lightGradient.addColorStop(0, 'rgba(255, 255, 0, 0.4)'); // Желтый свет в центре
-      lightGradient.addColorStop(0.4, 'rgba(255, 255, 0, 0.18)'); // Желтый свет в центре
-      lightGradient.addColorStop(0.8, 'rgba(255, 255, 0, 0.04)'); // Желтый свет в центре
-      lightGradient.addColorStop(1, 'rgba(255, 255, 0, 0)'); // Прозрачный по краям
+      const lightGradient = ctx.createRadialGradient(cx, cy - 80, 110, cx, cy, lightRadius); // Радиальный градиент
+      lightGradient.addColorStop(0, 'rgba(181, 153, 18, 0.35)'); // Желтый свет в центре
+      lightGradient.addColorStop(0.4, 'rgba(181, 153, 18, 0.18)'); // Желтый свет в центре
+      lightGradient.addColorStop(0.8, 'rgba(181, 153, 18, 0.04)'); // Желтый свет в центре
+      lightGradient.addColorStop(1, 'rgba(181, 153, 18, 0)'); // Прозрачный по краям
 
       ctx.beginPath();
       ctx.arc(cx, cy, lightRadius, 0, Math.PI * 2, false); // Увеличиваем радиус круга для света
@@ -311,7 +258,7 @@ function Clicker() {
       }
     });
 
-    if (count >= MaxNumbersCount) {
+    if (count >= maxNumbersCount) {
       numbers.forEach((number, index) => {
         number.x = Math.random() * dimensions.width;
         number.y = Math.random() * dimensions.height;
@@ -348,15 +295,21 @@ function Clicker() {
     ctx.fillText('+5', x, y);
   };
 
+  const updateScore = () => {
+    dispatch(increment(5));
+  };
+
   useEffect(() => {
     StarsAnimation();
   }, [stars]);
 
   useEffect(() => {
-    console.log(stars);
-  }, [starsAnimationID]);
+    console.log(score);
+  }, [score]);
 
   const clickScreen = () => {
+    updateScore();
+
     if (!isAnimatedStars) {
       setAnimatedStars(true);
       StarsAnimation();

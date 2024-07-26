@@ -1,15 +1,16 @@
 import { createSlice } from '@reduxjs/toolkit';
 
 const initialState = {
-  score: 0,
+  scoreValue: 0,
 };
 
 export const ScoreSlice = createSlice({
   name: 'score',
   initialState,
   reducers: {
-    increment: (state) => {
-      state.score += 1;
+    increment: (state, actions) => {
+      state.score += actions.payload;
+      console.log(state.score);
     },
   },
 });
