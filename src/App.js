@@ -17,6 +17,7 @@ function App() {
           <Route path="/shop" element={<Shop />} />
           <Route path="/rating" element={<Rating />} />
           <Route path="/invitations" element={<Invitations />} />
+          <Route path="*" element={<Clicker />} />
         </Routes>
         <NavPanel />
       </div>
