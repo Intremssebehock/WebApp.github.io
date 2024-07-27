@@ -12,12 +12,7 @@ function App() {
   return (
     <div className="App">
       <div className="App-container">
-        <Routes>
-          <Route path="/" element={<Clicker />} />
-          <Route path="/shop" element={<Shop />} />
-          <Route path="/rating" element={<Rating />} />
-          <Route path="/invitations" element={<Invitations />} />
-        </Routes>
+        <Clicker />
         <NavPanel />
       </div>
     </div>
