@@ -90,6 +90,8 @@ function Clicker() {
 
     window.addEventListener('resize', resizeCanvas);
 
+    alert(window.innerWidth + ' : ' + window.innerHeight);
+
     return () => {
       cancelAnimationFrame(starsAnimationID);
       cancelAnimationFrame(numbersAnimationID);
