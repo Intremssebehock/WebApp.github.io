@@ -122,57 +122,59 @@ function Clicker() {
   }, [score]);
 
   const StarsAnimation = () => {
-    if (stars.length === 0) {
-      return;
-    }
-    let continueAnim = true;
-    const centralCanvas = centralCanvasRef.current;
-    const ctx = centralCanvas.getContext('2d');
-    ctx.clearRect(0, 0, dimensions.width, dimensions.height);
+    try {
+      if (stars.length === 0) {
+        return;
+      }
+      let continueAnim = true;
+      const centralCanvas = centralCanvasRef.current;
+      const ctx = centralCanvas.getContext('2d');
+      ctx.clearRect(0, 0, dimensions.width, dimensions.height);
 
-    drawStar(
-      true,
-      ctx,
-      mainStar.cx,
-      mainStar.cy,
-      mainStar.spikes,
-      mainStar.outerRadius,
-      mainStar.innerRadius,
-    );
-
-    for (let i = 0; i < stars.length; i++) {
       drawStar(
-        false,
+        true,
         ctx,
-        stars[i].cx,
-        stars[i].cy,
-        stars[i].spikes,
-        stars[i].outerRadius,
-        stars[i].innerRadius,
-        stars[i].transparency,
+        mainStar.cx,
+        mainStar.cy,
+        mainStar.spikes,
+        mainStar.outerRadius,
+        mainStar.innerRadius,
       );
 
-      if (stars[i].outerRadius >= maxOuterRadius) {
-        stars[i].outerRadius = mainStar.outerRadius + 10;
-        stars[i].innerRadius = mainStar.innerRadius + 10;
-        stars[i].transparency = 1;
-        continueAnim = false;
-      } else {
-        stars[i].outerRadius += 2;
-        stars[i].innerRadius += 2.3;
-        stars[i].transparency -= globalTransparencyDecrement * 0.1;
-      }
-    }
+      for (let i = 0; i < stars.length; i++) {
+        drawStar(
+          false,
+          ctx,
+          stars[i].cx,
+          stars[i].cy,
+          stars[i].spikes,
+          stars[i].outerRadius,
+          stars[i].innerRadius,
+          stars[i].transparency,
+        );
 
-    if (continueAnim) {
-      cancelAnimationFrame(starsAnimationID);
-      const id = requestAnimationFrame(StarsAnimation);
-      setStarsAnimationID(id);
-    } else {
-      setAnimatedStars(false);
-      cancelAnimationFrame(starsAnimationID);
-      return;
-    }
+        if (stars[i].outerRadius >= maxOuterRadius) {
+          stars[i].outerRadius = mainStar.outerRadius + 10;
+          stars[i].innerRadius = mainStar.innerRadius + 10;
+          stars[i].transparency = 1;
+          continueAnim = false;
+        } else {
+          stars[i].outerRadius += 2;
+          stars[i].innerRadius += 2.3;
+          stars[i].transparency -= globalTransparencyDecrement * 0.1;
+        }
+      }
+
+      if (continueAnim) {
+        cancelAnimationFrame(starsAnimationID);
+        const id = requestAnimationFrame(StarsAnimation);
+        setStarsAnimationID(id);
+      } else {
+        setAnimatedStars(false);
+        cancelAnimationFrame(starsAnimationID);
+        return;
+      }
+    } catch {}
   };
 
   const drawStar = (isMainStar, ctx, cx, cy, spikes, outerRadius, innerRadius, transparency) => {
@@ -246,57 +248,59 @@ function Clicker() {
   };
 
   const NumbersAnimation = () => {
-    const frontCanvas = frontCanvasRef.current;
-    const ctxFront = frontCanvas.getContext('2d');
-    const backCanvas = backCanvasRef.current;
-    const ctxBack = backCanvas.getContext('2d');
-    ctxFront.clearRect(0, 0, ctxFront.canvas.width, ctxFront.canvas.height);
-    ctxBack.clearRect(0, 0, ctxFront.canvas.width, ctxFront.canvas.height);
-    let count = 0;
-    numbers.forEach((number, index) => {
-      if (number.fontSize > 0) {
-        if (number.isBackground) {
-          drawNumber(
-            ctxBack,
-            number.x,
-            number.y,
-            number.fontSize,
-            number.alpha,
-            number.isBackground,
-          );
-        } else {
-          drawNumber(
-            ctxFront,
-            number.x,
-            number.y,
-            number.fontSize,
-            number.alpha,
-            number.isBackground,
-          );
-        }
-        number.alpha -= globalTransparencyDecrement / 4;
-      }
-      number.fontSize += 2;
-      if (number.alpha <= 0) {
-        count += 1;
-      }
-    });
-
-    if (count >= maxNumbersCount) {
-      numbers.forEach((number, index) => {
-        number.x = Math.random() * dimensions.width;
-        number.y = Math.random() * dimensions.height;
-        number.alpha = 1;
-        number.fontSize = Math.floor(-50 + Math.random() * (0 + 1 - -50));
-      });
-      cancelAnimationFrame(numbersAnimationID);
-      setAnimatedNumbers(false);
+    try {
+      const frontCanvas = frontCanvasRef.current;
+      const ctxFront = frontCanvas.getContext('2d');
+      const backCanvas = backCanvasRef.current;
+      const ctxBack = backCanvas.getContext('2d');
       ctxFront.clearRect(0, 0, ctxFront.canvas.width, ctxFront.canvas.height);
-      return;
-    }
+      ctxBack.clearRect(0, 0, ctxFront.canvas.width, ctxFront.canvas.height);
+      let count = 0;
+      numbers.forEach((number, index) => {
+        if (number.fontSize > 0) {
+          if (number.isBackground) {
+            drawNumber(
+              ctxBack,
+              number.x,
+              number.y,
+              number.fontSize,
+              number.alpha,
+              number.isBackground,
+            );
+          } else {
+            drawNumber(
+              ctxFront,
+              number.x,
+              number.y,
+              number.fontSize,
+              number.alpha,
+              number.isBackground,
+            );
+          }
+          number.alpha -= globalTransparencyDecrement / 4;
+        }
+        number.fontSize += 2;
+        if (number.alpha <= 0) {
+          count += 1;
+        }
+      });
 
-    const id = requestAnimationFrame(NumbersAnimation);
-    setNumbersAnimationID(id);
+      if (count >= maxNumbersCount) {
+        numbers.forEach((number, index) => {
+          number.x = Math.random() * dimensions.width;
+          number.y = Math.random() * dimensions.height;
+          number.alpha = 1;
+          number.fontSize = Math.floor(-50 + Math.random() * (0 + 1 - -50));
+        });
+        cancelAnimationFrame(numbersAnimationID);
+        setAnimatedNumbers(false);
+        ctxFront.clearRect(0, 0, ctxFront.canvas.width, ctxFront.canvas.height);
+        return;
+      }
+
+      const id = requestAnimationFrame(NumbersAnimation);
+      setNumbersAnimationID(id);
+    } catch {}
   };
 
   const drawNumber = (ctx, x, y, fontSize, alpha, isBackground) => {
@@ -321,7 +325,6 @@ function Clicker() {
 
   const updateScore = () => {
     dispatch(increment(5));
-    alert(window.innerHeight + ' ' + window.innerWidth);
   };
 
   const clickScreen = () => {
