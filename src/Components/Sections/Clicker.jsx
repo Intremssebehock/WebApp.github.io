@@ -20,7 +20,7 @@ function Clicker() {
   });
   const [mainStar, setMainStar] = useState({
     cx: dimensions.width / 2,
-    cy: dimensions.height / 2 + 100,
+    cy: dimensions.height / 2 + dimensions.height / 10,
     spikes: 20,
     outerRadius: 90,
     innerRadius: 140,
@@ -89,8 +89,6 @@ function Clicker() {
     backCanvas.height = dimensions.height;
 
     window.addEventListener('resize', resizeCanvas);
-
-    alert(window.innerWidth + ' : ' + window.innerHeight);
 
     return () => {
       cancelAnimationFrame(starsAnimationID);

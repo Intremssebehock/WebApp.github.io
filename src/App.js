@@ -4,10 +4,15 @@ import Clicker from './Components/Sections/Clicker';
 import Shop from './Components/Sections/Shop';
 import Rating from './Components/Sections/Rating';
 import Invitations from './Components/Sections/Invitations';
-import { Routes, Route } from 'react-router-dom';
+import { Routes, Route, useNavigate } from 'react-router-dom';
+import { useEffect } from 'react';
 
 function App() {
   console.log(window.Telegram.WebApp.initData);
+  const navigate = useNavigate();
+  useEffect(() => {
+    navigate('/');
+  });
 
   return (
     <div className="App">
