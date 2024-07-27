@@ -10,7 +10,6 @@ function Clicker() {
   const frontCanvasRef = useRef(null);
   const centralCanvasRef = useRef(null);
   const backCanvasRef = useRef(null);
-  const [numbersIsDrawCount, setNumbersDrawCount] = useState(0);
   const [isAnimatedStars, setAnimatedStars] = useState(false);
   const [isAnimatedNumbers, setAnimatedNumbers] = useState(false);
   const [starsAnimationID, setStarsAnimationID] = useState();
@@ -96,7 +95,31 @@ function Clicker() {
       cancelAnimationFrame(numbersAnimationID);
       window.removeEventListener('resize', resizeCanvas);
     };
-  }, [window.innerWidth]);
+  }, [window.innerWidth, window.innerHeight]);
+
+  useEffect(() => {
+    StarsAnimation();
+  }, [stars]);
+
+  useEffect(() => {
+    switch (true) {
+      case score >= 1000000:
+        totalScoreRef.current.style.fontSize = '60px';
+        break;
+      case score >= 100000:
+        totalScoreRef.current.style.fontSize = '70px';
+        break;
+      case score >= 10000:
+        totalScoreRef.current.style.fontSize = '80px';
+        break;
+      case score >= 1000:
+        totalScoreRef.current.style.fontSize = '110px';
+        break;
+      default:
+        totalScoreRef.current.style.fontSize = '150px';
+        break;
+    }
+  }, [score]);
 
   const StarsAnimation = () => {
     if (stars.length === 0) {
@@ -298,31 +321,8 @@ function Clicker() {
 
   const updateScore = () => {
     dispatch(increment(5));
+    alert(window.innerHeight + ' ' + window.innerWidth);
   };
-
-  useEffect(() => {
-    StarsAnimation();
-  }, [stars]);
-
-  useEffect(() => {
-    switch (true) {
-      case score >= 1000000:
-        totalScoreRef.current.style.fontSize = '60px';
-        break;
-      case score >= 100000:
-        totalScoreRef.current.style.fontSize = '70px';
-        break;
-      case score >= 10000:
-        totalScoreRef.current.style.fontSize = '80px';
-        break;
-      case score >= 1000:
-        totalScoreRef.current.style.fontSize = '110px';
-        break;
-      default:
-        totalScoreRef.current.style.fontSize = '150px';
-        break;
-    }
-  }, [score]);
 
   const clickScreen = () => {
     updateScore();
