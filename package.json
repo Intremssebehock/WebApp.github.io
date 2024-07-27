@@ -2,7 +2,7 @@
   "name": "64_coin_bot_react",
   "version": "0.1.0",
   "private": true,
-  "homepage": "https://github.com/Intremssebehock/WebApp.github.io.git",
+  "homepage": "https://intremssebehock.github.io/WebApp.github.io/",
   "dependencies": {
     "@reduxjs/toolkit": "^2.2.6",
     "@testing-library/jest-dom": "^5.17.0",
