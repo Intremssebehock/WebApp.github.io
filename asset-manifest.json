@@ -1,17 +1,17 @@
 {
   "files": {
     "main.css": "/WebApp.github.io/static/css/main.ab9f6e58.css",
-    "main.js": "/WebApp.github.io/static/js/main.5f8476b7.js",
+    "main.js": "/WebApp.github.io/static/js/main.c8e3bf25.js",
     "static/media/Friends.svg": "/WebApp.github.io/static/media/Friends.75f37a4fd3ad917fb44a.svg",
     "static/media/ShoppingCart.svg": "/WebApp.github.io/static/media/ShoppingCart.a48e189371867e595242.svg",
     "static/media/Rating.svg": "/WebApp.github.io/static/media/Rating.e1abd1cfb2bb931197ec.svg",
     "static/media/AdsClick.svg": "/WebApp.github.io/static/media/AdsClick.97478230fba82e585a20.svg",
     "index.html": "/WebApp.github.io/index.html",
     "main.ab9f6e58.css.map": "/WebApp.github.io/static/css/main.ab9f6e58.css.map",
-    "main.5f8476b7.js.map": "/WebApp.github.io/static/js/main.5f8476b7.js.map"
+    "main.c8e3bf25.js.map": "/WebApp.github.io/static/js/main.c8e3bf25.js.map"
   },
   "entrypoints": [
     "static/css/main.ab9f6e58.css",
-    "static/js/main.5f8476b7.js"
+    "static/js/main.c8e3bf25.js"
   ]
 }
