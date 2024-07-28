@@ -32,8 +32,19 @@
   margin-right: auto;
   left: 0;
   right: 0;
-  top: 10vh;
+  top: 15vh;
   text-align: center;
   font-family: 'Erica One';
   z-index: 2;
+}
+
+.upgrades {
+  width: 100%;
+  padding: 29px 0px;
+  position: fixed;
+  align-items: center;
+  justify-content: center;
+  gap: 11px;
+  display: flex;
+  z-index: 3;
 }

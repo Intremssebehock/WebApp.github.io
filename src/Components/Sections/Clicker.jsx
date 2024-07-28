@@ -2,6 +2,8 @@ import React, { useRef, useEffect, useState } from 'react';
 import './Section.css';
 import { useSelector, useDispatch } from 'react-redux';
 import { increment } from '../../Redux/Slices/ScoreSlice';
+import Hires from '../Hires/Hires';
+import Abilities from '../Abilities/Abilities';
 
 function Clicker() {
   const score = useSelector((state) => state.score.scoreValue);
@@ -343,6 +345,10 @@ function Clicker() {
 
   return (
     <div className="Clicker-container">
+      <div className="upgrades">
+        <Hires />
+        <Abilities />
+      </div>
       <p ref={totalScoreRef} className="total-score">
         {score}°
       </p>
