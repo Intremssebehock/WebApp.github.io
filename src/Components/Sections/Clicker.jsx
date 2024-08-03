@@ -242,8 +242,8 @@ function Clicker() {
       // Рисование света за звездой
       const lightRadius = outerRadius * 4; // Увеличиваем радиус света
       const lightGradient = ctx.createRadialGradient(cx, cy - 80, 110, cx, cy, lightRadius); // Радиальный градиент
-      lightGradient.addColorStop(0, `rgba(181, 153, 18, ${0.39 + brightness})`); // Желтый свет в центре
-      lightGradient.addColorStop(0.4, `rgba(181, 153, 18, ${0.2 + brightness})`); // Желтый свет в центре
+      lightGradient.addColorStop(0, `rgba(181, 153, 18, ${0.39 + brightness * 3})`); // Желтый свет в центре
+      lightGradient.addColorStop(0.4, `rgba(181, 153, 18, ${0.2 + brightness * 2})`); // Желтый свет в центре
       lightGradient.addColorStop(0.8, `rgba(181, 153, 18, ${0.04 + brightness})`); // Желтый свет в центре
       lightGradient.addColorStop(1, `rgba(181, 153, 18, 0)`); // Прозрачный по краям
 

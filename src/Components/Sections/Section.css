@@ -167,6 +167,4 @@
   display: flex;
   flex-direction: column;
   gap: 12px;
-  flex-grow: 3;
-  overflow-y: scroll;
 }
