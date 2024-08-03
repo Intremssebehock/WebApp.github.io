@@ -1,18 +1,18 @@
 {
   "files": {
-    "main.css": "/WebApp.github.io/static/css/main.3559309c.css",
-    "main.js": "/WebApp.github.io/static/js/main.5ad3bf6a.js",
+    "main.css": "/WebApp.github.io/static/css/main.a1c0d7a4.css",
+    "main.js": "/WebApp.github.io/static/js/main.69b878df.js",
     "static/media/Friends.svg": "/WebApp.github.io/static/media/Friends.75f37a4fd3ad917fb44a.svg",
     "static/media/ShoppingCart.svg": "/WebApp.github.io/static/media/ShoppingCart.a48e189371867e595242.svg",
     "static/media/Rating.svg": "/WebApp.github.io/static/media/Rating.e1abd1cfb2bb931197ec.svg",
     "static/media/AdsClick.svg": "/WebApp.github.io/static/media/AdsClick.97478230fba82e585a20.svg",
     "index.html": "/WebApp.github.io/index.html",
     "static/media/Star.svg": "/WebApp.github.io/static/media/Star.13ede6f945c68f7050fb.svg",
-    "main.3559309c.css.map": "/WebApp.github.io/static/css/main.3559309c.css.map",
-    "main.5ad3bf6a.js.map": "/WebApp.github.io/static/js/main.5ad3bf6a.js.map"
+    "main.a1c0d7a4.css.map": "/WebApp.github.io/static/css/main.a1c0d7a4.css.map",
+    "main.69b878df.js.map": "/WebApp.github.io/static/js/main.69b878df.js.map"
   },
   "entrypoints": [
-    "static/css/main.3559309c.css",
-    "static/js/main.5ad3bf6a.js"
+    "static/css/main.a1c0d7a4.css",
+    "static/js/main.69b878df.js"
   ]
 }
