@@ -1,18 +1,18 @@
 {
   "files": {
-    "main.css": "/Intremssebehock/WebApp.github.io.git/static/css/main.67c8037c.css",
-    "main.js": "/Intremssebehock/WebApp.github.io.git/static/js/main.7a32fdde.js",
-    "static/media/Friends.svg": "/Intremssebehock/WebApp.github.io.git/static/media/Friends.75f37a4fd3ad917fb44a.svg",
-    "static/media/ShoppingCart.svg": "/Intremssebehock/WebApp.github.io.git/static/media/ShoppingCart.a48e189371867e595242.svg",
-    "static/media/Rating.svg": "/Intremssebehock/WebApp.github.io.git/static/media/Rating.e1abd1cfb2bb931197ec.svg",
-    "static/media/AdsClick.svg": "/Intremssebehock/WebApp.github.io.git/static/media/AdsClick.97478230fba82e585a20.svg",
-    "index.html": "/Intremssebehock/WebApp.github.io.git/index.html",
-    "static/media/Star.svg": "/Intremssebehock/WebApp.github.io.git/static/media/Star.13ede6f945c68f7050fb.svg",
-    "main.67c8037c.css.map": "/Intremssebehock/WebApp.github.io.git/static/css/main.67c8037c.css.map",
-    "main.7a32fdde.js.map": "/Intremssebehock/WebApp.github.io.git/static/js/main.7a32fdde.js.map"
+    "main.css": "/WebApp.github.io/static/css/main.07b36465.css",
+    "main.js": "/WebApp.github.io/static/js/main.7a32fdde.js",
+    "static/media/Friends.svg": "/WebApp.github.io/static/media/Friends.75f37a4fd3ad917fb44a.svg",
+    "static/media/ShoppingCart.svg": "/WebApp.github.io/static/media/ShoppingCart.a48e189371867e595242.svg",
+    "static/media/Rating.svg": "/WebApp.github.io/static/media/Rating.e1abd1cfb2bb931197ec.svg",
+    "static/media/AdsClick.svg": "/WebApp.github.io/static/media/AdsClick.97478230fba82e585a20.svg",
+    "index.html": "/WebApp.github.io/index.html",
+    "static/media/Star.svg": "/WebApp.github.io/static/media/Star.13ede6f945c68f7050fb.svg",
+    "main.07b36465.css.map": "/WebApp.github.io/static/css/main.07b36465.css.map",
+    "main.7a32fdde.js.map": "/WebApp.github.io/static/js/main.7a32fdde.js.map"
   },
   "entrypoints": [
-    "static/css/main.67c8037c.css",
+    "static/css/main.07b36465.css",
     "static/js/main.7a32fdde.js"
   ]
 }
