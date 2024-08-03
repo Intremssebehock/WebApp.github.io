@@ -27,7 +27,7 @@ function Shop() {
         <button
           className={`store-button ${activeSection === 'games' ? 'active' : ''}`}
           onClick={() => handleSectionChange('games')}>
-          +Games
+          +Game
         </button>
       </div>
       <div className="store-content">

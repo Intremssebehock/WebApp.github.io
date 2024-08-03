@@ -14,8 +14,10 @@ function Clicker() {
   const backCanvasRef = useRef(null);
   const [isAnimatedStars, setAnimatedStars] = useState(false);
   const [isAnimatedNumbers, setAnimatedNumbers] = useState(false);
+  const [isAnimatedMainButton, setAnimatedMainButton] = useState(false);
   const [starsAnimationID, setStarsAnimationID] = useState();
   const [numbersAnimationID, setNumbersAnimationID] = useState();
+  const [mainButtonAnimationID, setMainButtonAnimationID] = useState();
   const [dimensions, setDimensions] = useState({
     width: window.innerWidth,
     height: window.innerHeight,
@@ -27,10 +29,14 @@ function Clicker() {
     outerRadius: 90,
     innerRadius: 140,
     transparency: 1,
+    brightness: 0,
+    standardOuterRadius: 90,
+    standardInnerRadius: 140,
   });
 
   const [globalTransparencyDecrement, setGlobalTransparencyDecrement] = useState();
   const [maxOuterRadius, setMaxOuterRadius] = useState(300);
+  const [ratio, setRatio] = useState(30);
   const [maxNumbersCount, setMaxNumbersCount] = useState(5);
   const [stars, setStars] = useState([]); // Состояние для массива звёзд
   const [numbers, setNumbers] = useState([
@@ -61,7 +67,7 @@ function Clicker() {
         transparency,
       });
     }
-    setMaxOuterRadius(generatedStars[starCount - 1].outerRadius + 30);
+    setMaxOuterRadius(generatedStars[starCount - 1].outerRadius + ratio);
 
     setStars(generatedStars); // Обновляем состояние звёзд
   };
@@ -129,19 +135,10 @@ function Clicker() {
         return;
       }
       let continueAnim = true;
+      let isCenterAnim = false;
       const centralCanvas = centralCanvasRef.current;
       const ctx = centralCanvas.getContext('2d');
       ctx.clearRect(0, 0, dimensions.width, dimensions.height);
-
-      drawStar(
-        true,
-        ctx,
-        mainStar.cx,
-        mainStar.cy,
-        mainStar.spikes,
-        mainStar.outerRadius,
-        mainStar.innerRadius,
-      );
 
       for (let i = 0; i < stars.length; i++) {
         drawStar(
@@ -155,6 +152,10 @@ function Clicker() {
           stars[i].transparency,
         );
 
+        if (stars[i].outerRadius >= maxOuterRadius - ratio / 2) {
+          isCenterAnim = true;
+        }
+
         if (stars[i].outerRadius >= maxOuterRadius) {
           stars[i].outerRadius = mainStar.outerRadius + 10;
           stars[i].innerRadius = mainStar.innerRadius + 10;
@@ -164,6 +165,46 @@ function Clicker() {
           stars[i].outerRadius += 2;
           stars[i].innerRadius += 2.3;
           stars[i].transparency -= globalTransparencyDecrement * 0.1;
+        }
+      }
+
+      if (isCenterAnim === false) {
+        drawStar(
+          true,
+          ctx,
+          mainStar.cx,
+          mainStar.cy,
+          mainStar.spikes,
+          mainStar.outerRadius,
+          mainStar.innerRadius,
+          1,
+          mainStar.outerRadius - 10,
+          mainStar.brightness,
+        );
+        mainStar.outerRadius -= 0.5;
+        mainStar.innerRadius -= 1;
+        mainStar.brightness += 0.01;
+      } else {
+        drawStar(
+          true,
+          ctx,
+          mainStar.cx,
+          mainStar.cy,
+          mainStar.spikes,
+          mainStar.outerRadius,
+          mainStar.innerRadius,
+          1,
+          mainStar.outerRadius - 10,
+          mainStar.brightness,
+        );
+        if (mainStar.outerRadius >= mainStar.standardOuterRadius) {
+          mainStar.outerRadius = mainStar.standardOuterRadius;
+          mainStar.innerRadius = mainStar.standardInnerRadius;
+          mainStar.brightness = 0;
+        } else {
+          mainStar.outerRadius += 0.5;
+          mainStar.innerRadius += 1;
+          mainStar.brightness -= 0.01;
         }
       }
 
@@ -179,7 +220,18 @@ function Clicker() {
     } catch {}
   };
 
-  const drawStar = (isMainStar, ctx, cx, cy, spikes, outerRadius, innerRadius, transparency) => {
+  const drawStar = (
+    isMainStar,
+    ctx,
+    cx,
+    cy,
+    spikes,
+    outerRadius,
+    innerRadius,
+    transparency = 1,
+    fontSizeNumber = 80,
+    brightness = 0,
+  ) => {
     let rot = (Math.PI / 2) * 3;
     let x = cx;
     let y = cy;
@@ -190,10 +242,10 @@ function Clicker() {
       // Рисование света за звездой
       const lightRadius = outerRadius * 4; // Увеличиваем радиус света
       const lightGradient = ctx.createRadialGradient(cx, cy - 80, 110, cx, cy, lightRadius); // Радиальный градиент
-      lightGradient.addColorStop(0, 'rgba(181, 153, 18, 0.35)'); // Желтый свет в центре
-      lightGradient.addColorStop(0.4, 'rgba(181, 153, 18, 0.18)'); // Желтый свет в центре
-      lightGradient.addColorStop(0.8, 'rgba(181, 153, 18, 0.04)'); // Желтый свет в центре
-      lightGradient.addColorStop(1, 'rgba(181, 153, 18, 0)'); // Прозрачный по краям
+      lightGradient.addColorStop(0, `rgba(181, 153, 18, ${0.39 + brightness})`); // Желтый свет в центре
+      lightGradient.addColorStop(0.4, `rgba(181, 153, 18, ${0.2 + brightness})`); // Желтый свет в центре
+      lightGradient.addColorStop(0.8, `rgba(181, 153, 18, ${0.04 + brightness})`); // Желтый свет в центре
+      lightGradient.addColorStop(1, `rgba(181, 153, 18, 0)`); // Прозрачный по краям
 
       ctx.beginPath();
       ctx.arc(cx, cy, lightRadius, 0, Math.PI * 2, false); // Увеличиваем радиус круга для света
@@ -231,7 +283,7 @@ function Clicker() {
       ctx.fill();
 
       // Рисование текста
-      ctx.font = 'bold 80px Erica One'; // Настроить шрифт и размер
+      ctx.font = `bold ${fontSizeNumber}px Erica One`; // Настроить шрифт и размер
       ctx.textAlign = 'center';
       ctx.textBaseline = 'middle';
 
@@ -244,7 +296,7 @@ function Clicker() {
       ctx.fillText('+5', cx, cy); // Рисуем текст
     } else {
       ctx.lineWidth = 1;
-      ctx.strokeStyle = `rgba(82, 82, 82, ${transparency})`;
+      ctx.strokeStyle = `rgba(204, 172, 16, ${transparency})`;
       ctx.stroke();
     }
   };
