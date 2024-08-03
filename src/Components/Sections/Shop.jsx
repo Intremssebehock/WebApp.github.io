@@ -3,7 +3,13 @@ import SnakePreview from './../../images/SnakePreview.jpg';
 
 function Shop() {
   const [activeSection, setActiveSection] = useState('auto'); // Изначально выбран раздел "Auto"
-  const [games, setGames] = useState([{ name: 'Змейка', price: 'Бесплатно', img: SnakePreview }]);
+  const [games, setGames] = useState([
+    { name: 'Змейка', price: 'Бесплатно', img: SnakePreview },
+    { name: 'Змейка', price: 'Бесплатно', img: SnakePreview },
+    { name: 'Змейка', price: 'Бесплатно', img: SnakePreview },
+    { name: 'Змейка', price: 'Бесплатно', img: SnakePreview },
+    { name: 'Змейка', price: 'Бесплатно', img: SnakePreview },
+  ]);
 
   // Функция для переключения разделов
   const handleSectionChange = (section) => {
