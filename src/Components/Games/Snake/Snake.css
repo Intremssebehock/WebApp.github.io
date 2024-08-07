@@ -1,0 +1,36 @@
+.snake {
+  width: 100vw;
+  height: 100vh;
+  background-color: #141414;
+  position: fixed;
+  z-index: 15;
+  top: 0;
+  left: 0;
+}
+
+.snake-container {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  box-sizing: border-box;
+  align-items: center;
+}
+
+.game-field {
+  background-color: aliceblue;
+}
+
+.game-score {
+}
+
+.game-field {
+  background-color: transparent;
+}
+
+.game-buttons {
+}
+
+.game-button {
+  width: 100px;
+  height: 50px;
+}

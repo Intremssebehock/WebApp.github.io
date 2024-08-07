@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import SnakePreview from './../../images/SnakePreview.jpg';
+import Games from '../Games/Games';
 
 function Shop() {
   const [activeSection, setActiveSection] = useState('auto'); // Изначально выбран раздел "Auto"
@@ -77,6 +78,7 @@ function Shop() {
           </div>
         )}
       </div>
+      <Games />
     </div>
   );
 }
