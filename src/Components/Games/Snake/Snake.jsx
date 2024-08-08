@@ -501,7 +501,7 @@ function Snake() {
   }, [snake, squareSize, direction, bonus]);
 
   useEffect(() => {
-    //console.log(direction);
+    alert(window.width + ' : ' + window.height);
   }, [direction]);
 
   const generateRandomColRow = () => {
