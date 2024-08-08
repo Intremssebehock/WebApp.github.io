@@ -5,9 +5,20 @@ import Shop from './Components/Sections/Shop';
 import Rating from './Components/Sections/Rating';
 import Invitations from './Components/Sections/Invitations';
 import { Routes, Route } from 'react-router-dom';
+import { useEffect } from 'react';
 
 function App() {
-  console.log(window.Telegram.WebApp.initData);
+  useEffect(() => {
+    if (window.Telegram && window.Telegram.WebApp) {
+      const { WebApp } = window.Telegram;
+
+      // Установите WebApp в полный экран для максимальной высоты
+      WebApp.expand();
+
+      // Установите дополнительные настройки, если необходимо
+      // Вы также можете использовать WebApp.getInsets(), чтобы учесть отступы
+    }
+  }, []);
 
   return (
     <div className="App">

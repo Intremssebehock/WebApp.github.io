@@ -500,9 +500,7 @@ function Snake() {
     setGameId(id);
   }, [snake, squareSize, direction, bonus]);
 
-  useEffect(() => {
-    alert(window.width + ' : ' + window.height);
-  }, [direction]);
+  useEffect(() => {}, [direction]);
 
   const generateRandomColRow = () => {
     const col = Math.floor(Math.random() * cols);
