@@ -1,7 +1,11 @@
 import React, { useRef, useEffect, useState, useCallback } from 'react';
 import './Snake.css';
+import { useDispatch, useSelector } from 'react-redux';
+import { setRunningGame } from '../../../Redux/Slices/GameSlice';
 
 function Snake() {
+  const game = useSelector((state) => state.game.runningGame);
+  const dispatch = useDispatch();
   const canvasRef = useRef(null);
   const [squareSize, setSquareSize] = useState();
   const [gameId, setGameId] = useState();
@@ -101,8 +105,6 @@ function Snake() {
   };
 
   const drawTongue = (ctx, x, y, size, direction) => {
-    console.log(direction);
-
     const tongueWidth = size / 3;
     const tongueHeight = size / 8;
     const radius = 6; // Радиус закругления углов
@@ -336,105 +338,109 @@ function Snake() {
 
         ctx.fill();
       }
-      let snakeX = snake[0].x;
-      let snakeY = snake[0].y;
-      let newSnake = snake;
+      if (direction) {
+        let snakeX = snake[0].x;
+        let snakeY = snake[0].y;
+        let newSnake = snake;
 
-      if (checkBonusCollision()) {
-        // Обновите состояние или выполните действия, когда бонус был съеден
-        console.log('Bonus collected!');
-        // Например, обновите позицию бонуса и увеличьте размер змейки
-        setBonusAnim(bonus);
-        let { col, row } = generateRandomColRow();
-        for (let i = 0; i < spikes.length; i++) {
-          if (spikes[i].col === col && spikes[i].row === row) {
-            col = Math.floor(Math.random() * cols);
-            row = Math.floor(Math.random() * rows);
-            i = 0;
+        if (checkBonusCollision()) {
+          // Обновите состояние или выполните действия, когда бонус был съеден
+          console.log('Bonus collected!');
+          // Например, обновите позицию бонуса и увеличьте размер змейки
+          setBonusAnim(bonus);
+          let { col, row } = generateRandomColRow();
+          for (let i = 0; i < spikes.length; i++) {
+            if (spikes[i].col === col && spikes[i].row === row) {
+              col = Math.floor(Math.random() * cols);
+              row = Math.floor(Math.random() * rows);
+              i = 0;
+            }
           }
+          setBonus({
+            x: col * (squareSize + padding) + squareSize / 2,
+            y: row * (squareSize + padding) + squareSize / 2,
+            col: col,
+            row: row,
+            transparency: 1,
+            outerRadius: 0,
+            innerRadius: -9,
+          });
+          setGameScore(gameScore + 1);
+        } else {
+          newSnake.pop();
         }
-        setBonus({
-          x: col * (squareSize + padding) + squareSize / 2,
-          y: row * (squareSize + padding) + squareSize / 2,
-          col: col,
-          row: row,
-          transparency: 1,
-          outerRadius: 0,
-          innerRadius: -9,
-        });
-        setGameScore(gameScore + 1);
-      } else {
-        newSnake.pop();
+
+        switch (direction) {
+          case 'right':
+            snakeX += 3;
+            break;
+          case 'left':
+            snakeX -= 3;
+            break;
+          case 'top':
+            snakeY -= 3;
+            break;
+          case 'bottom':
+            snakeY += 3;
+            break;
+        }
+
+        let newHead = {
+          x: snakeX,
+          y: snakeY,
+        };
+
+        newSnake.unshift(newHead);
+        setSnake(newSnake);
       }
-
-      switch (direction) {
-        case 'right':
-          snakeX += 3;
-          break;
-        case 'left':
-          snakeX -= 3;
-          break;
-        case 'top':
-          snakeY -= 3;
-          break;
-        case 'bottom':
-          snakeY += 3;
-          break;
-      }
-
-      let newHead = {
-        x: snakeX,
-        y: snakeY,
-      };
-
-      newSnake.unshift(newHead);
-      setSnake(newSnake);
     } catch {}
   };
 
   const drawGame = () => {
-    const canvas = canvasRef.current;
-    const ctx = canvas.getContext('2d');
-    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    try {
+      const canvas = canvasRef.current;
+      const ctx = canvas.getContext('2d');
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-    drawGrid(ctx);
+      drawGrid(ctx);
 
-    if (bonus.outerRadius >= squareSize / 2.2) {
-      bonus.outerRadius = squareSize / 2.2;
-      bonus.innerRadius = squareSize / 2.2 - 9;
-    } else {
-      bonus.outerRadius += 2;
-      bonus.innerRadius += 2;
-    }
-    drawBonus(
-      ctx,
-      bonus.x,
-      bonus.y,
-      6,
-      bonus.outerRadius,
-      bonus.innerRadius,
-      bonus.transparency,
-      true,
-    );
-    drawSnake(ctx);
+      if (bonus.outerRadius >= squareSize / 2.2) {
+        bonus.outerRadius = squareSize / 2.2;
+        bonus.innerRadius = squareSize / 2.2 - 9;
+      } else {
+        bonus.outerRadius += 2;
+        bonus.innerRadius += 2;
+      }
+      drawBonus(
+        ctx,
+        bonus.x,
+        bonus.y,
+        6,
+        bonus.outerRadius,
+        bonus.innerRadius,
+        bonus.transparency,
+        true,
+      );
+      drawSnake(ctx);
 
-    if (bonusAnim) {
-      drawBonusAnim(ctx);
-      bonusAnim.transparency -= 0.05;
-    }
+      if (bonusAnim) {
+        drawBonusAnim(ctx);
+        bonusAnim.transparency -= 0.05;
+      }
 
-    spikes.forEach((spike) => {
-      drawSpike(ctx, spike.x, spike.y, 15, spike.outerRadius, spike.innerRadius);
-    });
+      spikes.forEach((spike) => {
+        drawSpike(ctx, spike.x, spike.y, 15, spike.outerRadius, spike.innerRadius);
+      });
 
-    if (checkWallCollision() || checkSelfCollision() || checkSpikeCollision()) {
-      console.log('Game Over!');
-      return; // Останавливаем отрисовку
-    }
+      if (checkWallCollision() || checkSpikeCollision()) {
+        dispatch(setRunningGame('GameOver'));
+        return;
+      }
 
-    cancelAnimationFrame(gameId);
-    const id = requestAnimationFrame(drawGame);
-    setGameId(id);
+      cancelAnimationFrame(gameId);
+      const id = requestAnimationFrame(drawGame);
+      setGameId(id);
+    } catch {}
   };
 
   useEffect(() => {

@@ -1,0 +1,97 @@
+.GameOver {
+  width: 100vw;
+  height: 100vh;
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 20;
+}
+
+.GameOver-container {
+  width: inherit;
+  height: inherit;
+}
+
+.GameOver-canvas {
+  width: inherit;
+  height: inherit;
+  background-color: #eac50d;
+}
+
+.button-block {
+  position: fixed;
+  width: 100%;
+  height: 140px;
+  bottom: 0;
+  padding: 38px 34px;
+}
+
+.take-button {
+  width: 100%;
+  height: 100%;
+  border-radius: 15px;
+  background: #262626;
+  border: none;
+  color: #f0cc18;
+  text-align: center;
+  font-family: 'Open Sans';
+  font-size: 20px;
+  font-style: normal;
+  font-weight: 700;
+  line-height: 100%; /* 20px */
+}
+
+.overlay-text {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  text-align: center;
+  color: white; /* Цвет текста, вы можете изменить это */
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.text-main {
+  font-size: 2rem;
+  color: #c9ad1f;
+  text-align: center;
+  font-family: 'Open Sans';
+  font-style: normal;
+  font-weight: 700;
+  line-height: 100%; /* 30px */
+  letter-spacing: -0.9px;
+}
+
+.text-score {
+  font-size: 5.5rem;
+  color: #262626;
+  text-align: center;
+  font-family: 'Erica One';
+  font-style: normal;
+  font-weight: 400;
+  line-height: 100%; /* 97.246px */
+  letter-spacing: -5.835px;
+  padding-right: 90px;
+  background-image: url('./../../images/Star5.svg');
+  background-position: right;
+  background-repeat: no-repeat;
+}
+
+.text-strike {
+  width: max-content;
+  font-size: 2rem;
+  text-decoration: line-through;
+  color: #c3a409;
+  text-align: center;
+  font-family: 'Erica One';
+  font-size: 43.61px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 100%; /* 43.61px */
+  letter-spacing: -2.617px;
+  background-image: url('./../../images/Star4.svg');
+  background-position: right;
+  background-repeat: no-repeat;
+}
