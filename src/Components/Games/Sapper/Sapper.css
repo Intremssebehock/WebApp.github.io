@@ -1,0 +1,113 @@
+@import url('https://fonts.googleapis.com/css2?family=Golos+Text:wght@400..900&family=Khand:wght@300;400;500;600;700&family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap');
+
+.Sapper {
+  width: 100vw;
+  height: 100vh;
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 11;
+  background-color: #141414;
+}
+
+.Sapper-container {
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  align-items: center;
+}
+
+.Sapper-canvas {
+  width: 335px;
+  height: 473px;
+}
+
+.game-score {
+  display: flex;
+  gap: 32px;
+  width: 100%;
+  justify-content: center;
+  padding: 4vh 0px 20px 0px;
+}
+
+.score {
+  color: #4c4c4c;
+  font-family: 'Erica One';
+  font-size: 65.484px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 100%; /* 65.484px */
+  letter-spacing: -3.929px;
+}
+
+.you-new-score {
+  color: rgba(234, 197, 13, 0.5);
+}
+
+.gameGrid {
+  border-radius: 13px;
+  border: 2px solid #212121;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 372px;
+  padding-bottom: 17px;
+  gap: 15px;
+}
+
+.manual {
+  padding: 17px;
+  border-radius: 10px;
+  background: #212121;
+}
+
+.end-game {
+  width: 330px;
+  height: 7vh;
+  border-radius: 15px;
+  background: #fff;
+  display: flex;
+  align-items: center;
+  padding: 18px 24px;
+  justify-content: space-between;
+}
+
+.end-game p {
+  color: #141414;
+  text-align: center;
+  font-family: 'Open Sans';
+  font-size: 18px;
+  font-style: normal;
+  font-weight: 600;
+  line-height: 100%; /* 18px */
+}
+
+.final-score {
+  border-radius: 25px;
+  padding: 5px 13px;
+}
+.final-score p {
+  font-family: 'Open Sans';
+  font-size: 20px;
+  font-style: normal;
+  font-weight: 700;
+  line-height: 100%; /* 20px */
+  padding-right: 25px;
+  background-size: 19px;
+  background-position: right;
+  background-repeat: no-repeat;
+}
+.final-score-win {
+  background-color: #eac50d;
+}
+.final-score-win p {
+  color: #544912;
+  background-image: url('./../../../images/StarRusty.svg');
+}
+.final-score-lose {
+  background-color: #ff2f2a;
+}
+.final-score-lose p {
+  color: #fff;
+  background-image: url('./../../../images/StarWhite.svg');
+}

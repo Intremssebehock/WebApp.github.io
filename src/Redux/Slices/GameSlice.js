@@ -1,7 +1,8 @@
 import { createSlice } from '@reduxjs/toolkit';
 
 const initialState = {
-  runningGame: 'Snake',
+  runningGame: 'Pinball',
+  gameScore: 0,
 };
 
 export const GameSlice = createSlice({
@@ -11,9 +12,12 @@ export const GameSlice = createSlice({
     setRunningGame: (state, actions) => {
       state.runningGame = actions.payload;
     },
+    setRunningGameScore: (state, actions) => {
+      state.gameScore = actions.payload;
+    },
   },
 });
 
-export const { setRunningGame } = GameSlice.actions;
+export const { setRunningGame, setRunningGameScore } = GameSlice.actions;
 
 export default GameSlice.reducer;

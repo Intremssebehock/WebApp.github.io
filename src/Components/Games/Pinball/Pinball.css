@@ -1,0 +1,57 @@
+.Pinball {
+  width: 100vw;
+  height: 100vh;
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 11;
+  background-color: #141414;
+}
+
+.Pinball-container {
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  align-items: center;
+}
+
+.canvas {
+  border-radius: 13.584px;
+  background: #262626 !important;
+}
+
+.game-buttons {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  position: absolute;
+  bottom: 0;
+  padding: 7vw;
+}
+
+.flipper-button {
+  width: 30vw;
+  height: 13vh;
+  background-color: white;
+  background-position: center;
+  background-repeat: no-repeat;
+  border: 5px solid white;
+  transition: backgroundColor 1s linear;
+  border-radius: 13.584px;
+  background: #fff;
+  background-image: url(./../../../images/FlipperButton.svg);
+  background-position: center;
+  background-repeat: no-repeat;
+}
+
+@media (max-width: 391px) {
+  .flipper-button {
+    width: 25vw;
+    height: 11vh;
+    background-size: 25px;
+  }
+  .game-buttons {
+    padding: 3vw;
+  }
+}

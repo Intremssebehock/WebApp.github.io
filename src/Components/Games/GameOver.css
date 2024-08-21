@@ -31,7 +31,6 @@
   height: 100%;
   border-radius: 15px;
   background: #262626;
-  border: none;
   color: #f0cc18;
   text-align: center;
   font-family: 'Open Sans';
@@ -39,6 +38,11 @@
   font-style: normal;
   font-weight: 700;
   line-height: 100%; /* 20px */
+  border: 5px solid #262626;
+}
+
+.take-button:hover {
+  background-color: #262626b5;
 }
 
 .overlay-text {
@@ -65,7 +69,7 @@
 }
 
 .text-score {
-  font-size: 5.5rem;
+  font-size: 20vw;
   color: #262626;
   text-align: center;
   font-family: 'Erica One';
@@ -73,10 +77,11 @@
   font-weight: 400;
   line-height: 100%; /* 97.246px */
   letter-spacing: -5.835px;
-  padding-right: 90px;
-  background-image: url('./../../images/Star5.svg');
+  padding-right: 100px;
+  background-image: url('./../../images/StarBlack.svg');
   background-position: right;
   background-repeat: no-repeat;
+  background-size: contain;
 }
 
 .text-strike {
@@ -91,7 +96,7 @@
   font-weight: 400;
   line-height: 100%; /* 43.61px */
   letter-spacing: -2.617px;
-  background-image: url('./../../images/Star4.svg');
+  background-image: url('./../../images/StarYellow.svg');
   background-position: right;
   background-repeat: no-repeat;
 }

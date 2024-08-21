@@ -1,9 +1,14 @@
 import React, { useEffect, useRef } from 'react';
 import './GameOver.css';
+import { setRunningGame } from '../../Redux/Slices/GameSlice';
+import { useDispatch, useSelector } from 'react-redux';
 
 function GameOver() {
+  const gameScore = useSelector((state) => state.game.gameScore);
+  const dispatch = useDispatch();
   const canvasRef = useRef(null);
   const angleRef = useRef(0); // Ссылка для хранения угла поворота
+  const textRef = useRef(null); // Ссылка на текстовый контейнер
   const starsCount = 10;
 
   const drawStar = (ctx, cx, cy, spikes, outerRadius, innerRadius, angle, isMainStar) => {
@@ -42,6 +47,28 @@ function GameOver() {
     }
 
     ctx.restore(); // Восстанавливаем предыдущее состояние контекста
+  };
+
+  const resizeText = () => {
+    const textElement = textRef.current;
+    const containerWidth = window.innerWidth;
+    const textElementWidth = textElement.scrollWidth;
+
+    // Начальный размер шрифта
+    const maxFontSize = 90;
+    let fontSize = maxFontSize;
+
+    if (textElementWidth > containerWidth) {
+      // Уменьшаем размер шрифта если текст слишком длинный
+      fontSize = maxFontSize * (containerWidth / textElementWidth);
+    }
+
+    console.log(textElementWidth + ' ' + containerWidth);
+
+    // Установите минимальный размер шрифта
+    fontSize = Math.max(fontSize, 10);
+
+    textElement.style.fontSize = `${fontSize}px`;
   };
 
   useEffect(() => {
@@ -94,6 +121,7 @@ function GameOver() {
     // Инициализируем размеры канваса
     resizeCanvas();
     animate();
+    resizeText();
 
     // Обновляем размеры канваса при изменении размера окна
     window.addEventListener('resize', resizeCanvas);
@@ -111,11 +139,15 @@ function GameOver() {
         <canvas ref={canvasRef} className="GameOver-canvas"></canvas>
         <div className="overlay-text">
           <p className="text-main">Game over!</p>
-          <p className="text-score">3500</p>
+          <p ref={textRef} className="text-score">
+            {gameScore}
+          </p>
           <p className="text-strike">-1000--</p>
         </div>
         <div className="button-block">
-          <button className="take-button">Получить</button>
+          <button onClick={() => dispatch(setRunningGame(''))} className="take-button">
+            Получить
+          </button>
         </div>
       </div>
     </div>

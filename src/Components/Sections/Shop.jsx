@@ -1,15 +1,16 @@
 import React, { useState } from 'react';
-import SnakePreview from './../../images/SnakePreview.jpg';
 import Games from '../Games/Games';
+import { useDispatch } from 'react-redux';
+import { setRunningGame } from '../../Redux/Slices/GameSlice';
+import SnakePreview from './../../images/SnakePreview.jpg';
+import SapperPreview from './../../images/SapperPreview.jpg';
 
 function Shop() {
+  const dispatch = useDispatch();
   const [activeSection, setActiveSection] = useState('auto'); // Изначально выбран раздел "Auto"
   const [games, setGames] = useState([
-    { name: 'Змейка', price: 'Бесплатно', img: SnakePreview },
-    { name: 'Змейка', price: 'Бесплатно', img: SnakePreview },
-    { name: 'Змейка', price: 'Бесплатно', img: SnakePreview },
-    { name: 'Змейка', price: 'Бесплатно', img: SnakePreview },
-    { name: 'Змейка', price: 'Бесплатно', img: SnakePreview },
+    { name: 'Snake', price: 'Бесплатно', img: SnakePreview },
+    { name: 'Sapper', price: 'Бесплатно', img: SapperPreview },
   ]);
 
   // Функция для переключения разделов
@@ -63,7 +64,7 @@ function Shop() {
             </p>
             <ul className="game-list">
               {games.map((game, index) => (
-                <li className="game-list-item">
+                <li key={index} className="game-list-item">
                   <div className="game-container">
                     <div className="game-info">
                       <p className="title">{game.name}</p>
@@ -71,7 +72,9 @@ function Shop() {
                     </div>
                     <img className="game-preview" src={game.img} alt="GamePreview" />
                   </div>
-                  <button className="receive">Получить</button>
+                  <button onClick={() => dispatch(setRunningGame(game.name))} className="receive">
+                    Играть
+                  </button>
                 </li>
               ))}
             </ul>

@@ -1,7 +1,7 @@
 import React, { useRef, useEffect, useState, useCallback } from 'react';
 import './Snake.css';
 import { useDispatch, useSelector } from 'react-redux';
-import { setRunningGame } from '../../../Redux/Slices/GameSlice';
+import { setRunningGame, setRunningGameScore } from '../../../Redux/Slices/GameSlice';
 
 function Snake() {
   const game = useSelector((state) => state.game.runningGame);
@@ -9,7 +9,7 @@ function Snake() {
   const canvasRef = useRef(null);
   const [squareSize, setSquareSize] = useState();
   const [gameId, setGameId] = useState();
-  const [gameScore, setGameScore] = useState(0);
+  const [gameScore, setGameScore] = useState(1000);
   const [bonus, setBonus] = useState({});
   const [snake, setSnake] = useState([]);
   const [direction, setDirection] = useState('');
@@ -345,7 +345,6 @@ function Snake() {
 
         if (checkBonusCollision()) {
           // Обновите состояние или выполните действия, когда бонус был съеден
-          console.log('Bonus collected!');
           // Например, обновите позицию бонуса и увеличьте размер змейки
           setBonusAnim(bonus);
           let { col, row } = generateRandomColRow();
@@ -365,7 +364,7 @@ function Snake() {
             outerRadius: 0,
             innerRadius: -9,
           });
-          setGameScore(gameScore + 1);
+          setGameScore(gameScore * bonusProfit);
         } else {
           newSnake.pop();
         }
@@ -432,8 +431,9 @@ function Snake() {
         drawSpike(ctx, spike.x, spike.y, 15, spike.outerRadius, spike.innerRadius);
       });
 
-      if (checkWallCollision() || checkSpikeCollision()) {
+      if (checkWallCollision() || checkSelfCollision() || checkSpikeCollision()) {
         dispatch(setRunningGame('GameOver'));
+        dispatch(setRunningGameScore(gameScore));
         return;
       }
 
@@ -444,6 +444,7 @@ function Snake() {
   };
 
   useEffect(() => {
+    dispatch(setRunningGameScore(0));
     const canvas = canvasRef.current;
     canvas.style.width = canvas.width;
     canvas.style.height = canvas.height;
@@ -542,7 +543,7 @@ function Snake() {
         debounceDirectionChange('right');
         break;
       default:
-        debounceDirectionChange('left');
+        debounceDirectionChange('top');
         break;
     }
   };
@@ -571,8 +572,14 @@ function Snake() {
     <div className="snake">
       <div className="snake-container">
         <div className="game-score">
-          <p className="you-score">1000</p>
-          <p className="you-new-score">{gameScore}</p>
+          <div className="start-score-block">
+            <p className="start-score-block-title">Your score:</p>
+            <p className="score you-score">1000</p>
+          </div>
+          <div className="new-score-block">
+            <p className="new-score-block-title">Your new score:</p>
+            <p className="score you-new-score">{gameScore}</p>
+          </div>
         </div>
         <canvas
           width="368px"
@@ -581,12 +588,8 @@ function Snake() {
           ref={canvasRef}
           className="game-field"></canvas>
         <div className="game-buttons">
-          <button onClick={clickLeft} className="game-button left-game-button">
-            Left
-          </button>
-          <button onClick={clickRight} className="game-button right-game-button">
-            Right
-          </button>
+          <button onClick={clickLeft} className="game-button left-game-button"></button>
+          <button onClick={clickRight} className="game-button right-game-button"></button>
         </div>
       </div>
     </div>
