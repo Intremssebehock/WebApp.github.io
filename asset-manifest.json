@@ -1,20 +1,24 @@
 {
   "files": {
-    "main.css": "/WebApp.github.io/static/css/main.5a709e90.css",
-    "main.js": "/WebApp.github.io/static/js/main.c835e698.js",
+    "main.css": "/WebApp.github.io/static/css/main.a2902b56.css",
+    "main.js": "/WebApp.github.io/static/js/main.b43bc8a9.js",
     "static/media/Friends.svg": "/WebApp.github.io/static/media/Friends.75f37a4fd3ad917fb44a.svg",
     "static/media/ShoppingCart.svg": "/WebApp.github.io/static/media/ShoppingCart.a48e189371867e595242.svg",
     "static/media/Rating.svg": "/WebApp.github.io/static/media/Rating.e1abd1cfb2bb931197ec.svg",
     "static/media/AdsClick.svg": "/WebApp.github.io/static/media/AdsClick.97478230fba82e585a20.svg",
     "index.html": "/WebApp.github.io/index.html",
-    "static/media/Star4.svg": "/WebApp.github.io/static/media/Star4.138a358ae02824331930.svg",
-    "static/media/Star5.svg": "/WebApp.github.io/static/media/Star5.cd7c2c495b4f3b404a81.svg",
-    "static/media/Star.svg": "/WebApp.github.io/static/media/Star.13ede6f945c68f7050fb.svg",
-    "main.5a709e90.css.map": "/WebApp.github.io/static/css/main.5a709e90.css.map",
-    "main.c835e698.js.map": "/WebApp.github.io/static/js/main.c835e698.js.map"
+    "static/media/RightButton.svg": "/WebApp.github.io/static/media/RightButton.be3b748cdf52d1331ca5.svg",
+    "static/media/LeftButton.svg": "/WebApp.github.io/static/media/LeftButton.b6f695a64cf8aefac15c.svg",
+    "static/media/FlipperButton.svg": "/WebApp.github.io/static/media/FlipperButton.2dd2b418c2deeda4ed53.svg",
+    "static/media/StarBlack.svg": "/WebApp.github.io/static/media/StarBlack.cd7c2c495b4f3b404a81.svg",
+    "static/media/StarRusty.svg": "/WebApp.github.io/static/media/StarRusty.f0f09d722824454b9a77.svg",
+    "static/media/StarWhite.svg": "/WebApp.github.io/static/media/StarWhite.66aa2fbc3a3ed106f284.svg",
+    "static/media/StarYellow.svg": "/WebApp.github.io/static/media/StarYellow.13ede6f945c68f7050fb.svg",
+    "main.a2902b56.css.map": "/WebApp.github.io/static/css/main.a2902b56.css.map",
+    "main.b43bc8a9.js.map": "/WebApp.github.io/static/js/main.b43bc8a9.js.map"
   },
   "entrypoints": [
-    "static/css/main.5a709e90.css",
-    "static/js/main.c835e698.js"
+    "static/css/main.a2902b56.css",
+    "static/js/main.b43bc8a9.js"
   ]
 }
