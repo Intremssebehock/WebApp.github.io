@@ -18,6 +18,8 @@
 .canvas {
   border-radius: 13.584px;
   background: #262626 !important;
+  width: 372px;
+  height: 771px;
 }
 
 .game-buttons {

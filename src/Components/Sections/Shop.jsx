@@ -77,7 +77,7 @@ function Shop() {
                     <img className="game-preview" src={game.img} alt="GamePreview" />
                   </div>
                   <button onClick={() => dispatch(setRunningGame(game.name))} className="receive">
-                    Играть
+                    Play
                   </button>
                 </li>
               ))}
