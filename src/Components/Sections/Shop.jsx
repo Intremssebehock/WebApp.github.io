@@ -4,6 +4,8 @@ import { useDispatch } from 'react-redux';
 import { setRunningGame } from '../../Redux/Slices/GameSlice';
 import SnakePreview from './../../images/SnakePreview.jpg';
 import SapperPreview from './../../images/SapperPreview.jpg';
+import TickTackToePreview from './../../images/TickTackToePreview.jpg';
+import PinballPreview from './../../images/PinballPreview.jpg';
 
 function Shop() {
   const dispatch = useDispatch();
@@ -11,6 +13,8 @@ function Shop() {
   const [games, setGames] = useState([
     { name: 'Snake', price: 'Бесплатно', img: SnakePreview },
     { name: 'Sapper', price: 'Бесплатно', img: SapperPreview },
+    { name: 'TickTackToe', price: 'Бесплатно', img: TickTackToePreview },
+    { name: 'Pinball', price: 'Бесплатно', img: PinballPreview },
   ]);
 
   // Функция для переключения разделов

@@ -21,7 +21,7 @@ function Snake() {
   const padding = 15;
   const rows = 6;
   const cols = 4;
-  const bonusProfit = 5;
+  const bonusProfit = 50;
 
   const checkBonusCollision = () => {
     const head = snake[0];
@@ -364,7 +364,7 @@ function Snake() {
             outerRadius: 0,
             innerRadius: -9,
           });
-          setGameScore(gameScore * bonusProfit);
+          setGameScore(gameScore + bonusProfit);
         } else {
           newSnake.pop();
         }

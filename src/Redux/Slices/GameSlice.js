@@ -1,7 +1,7 @@
 import { createSlice } from '@reduxjs/toolkit';
 
 const initialState = {
-  runningGame: 'Pinball',
+  runningGame: '',
   gameScore: 0,
 };
 

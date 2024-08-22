@@ -5,11 +5,11 @@ import { useDispatch, useSelector } from 'react-redux';
 import { setRunningGame, setRunningGameScore } from '../../../Redux/Slices/GameSlice';
 
 function Pinball() {
+  const dispatch = useDispatch();
   const [gameScore, setGameScore] = useState(1000);
   const [bonus, setBonus] = useState({});
   const [bonusAnim, setBonusAnim] = useState();
   const [gameId, setGameId] = useState();
-  const [isLeftFlipperRotate, setIsleftFlipperRotate] = useState(false);
 
   const canvasRef = useRef(null);
   const ballRef = useRef(null);
@@ -63,14 +63,15 @@ function Pinball() {
     // Добавление текста в центр звезды
     ctx.save(); // Сохраняем текущее состояние контекста
 
-    // Настройка шрифта
-    ctx.font = 'bold 25px Erica One'; // Вы можете изменить размер и тип шрифта по вашему усмотрению
-    ctx.fillStyle = `rgba(33, 33, 33, ${transparency})`; // Цвет текста
-    ctx.textAlign = 'center'; // Центрируем текст по горизонтали
-    ctx.textBaseline = 'middle'; // Центрируем текст по вертикали
-
     // Отрисовка текста
-    ctx.fillText(`x${bonusProfit}`, cx, cy);
+    if (bonusProfit != '') {
+      // Настройка шрифта
+      ctx.font = 'bold 25px Erica One'; // Вы можете изменить размер и тип шрифта по вашему усмотрению
+      ctx.fillStyle = `rgba(33, 33, 33, ${transparency})`; // Цвет текста
+      ctx.textAlign = 'center'; // Центрируем текст по горизонтали
+      ctx.textBaseline = 'middle'; // Центрируем текст по вертикали
+      ctx.fillText(`x${bonusProfit}`, cx, cy);
+    }
 
     ctx.restore(); // Восстанавливаем предыдущее состояние контекста
   };
@@ -434,74 +435,81 @@ function Pinball() {
   }, [bonus, bonusAnim]);
 
   const drawGame = () => {
-    const canvas = canvasRef.current;
-    const ctx = canvas.getContext('2d');
+    try {
+      const canvas = canvasRef.current;
+      const ctx = canvas.getContext('2d');
 
-    const bonusesCoord = [
-      {
-        x: canvas.width / 2,
-        y: 350,
-        bonusProfit: 10,
-      },
-      {
-        x: 55,
-        y: 180,
-        bonusProfit: 50,
-      },
-      {
-        x: canvas.width - 55,
-        y: 180,
-        bonusProfit: 50,
-      },
-      {
-        x: 150,
-        y: 320,
-        bonusProfit: 30,
-      },
-      {
-        x: canvas.width - 150,
-        y: 320,
-        bonusProfit: 30,
-      },
-    ];
-
-    if (bonusAnim) {
-      if (bonusAnim.transparency <= 0) {
-        const randomIndex = Math.floor(Math.random() * 5);
-        setBonusAnim(null);
-        const newScore = bonus.bonusProfit + gameScore;
-        setGameScore(newScore);
-        setBonus({
-          x: bonusesCoord[randomIndex].x,
-          y: bonusesCoord[randomIndex].y,
-          transparency: 1,
-          outerRadius: bonusSize / 1.7,
-          innerRadius: bonusSize / 1.7 - 9,
-          bonusProfit: bonusesCoord[randomIndex].bonusProfit,
-        });
-      } else {
-        drawBonusAnim(ctx, 50);
+      if (ballRef.current.position.y > canvas.height) {
+        dispatch(setRunningGame('GameOver'));
+        dispatch(setRunningGameScore(gameScore));
       }
-    } else {
-      drawBonus(
-        ctx,
-        bonus.x,
-        bonus.y,
-        6,
-        bonus.outerRadius,
-        bonus.innerRadius,
-        bonus.transparency,
-        true,
-        bonus.bonusProfit,
-      );
-    }
 
-    if (checkBonusCollision()) {
-      setBonusAnim(bonus);
-    }
+      const bonusesCoord = [
+        {
+          x: canvas.width / 2,
+          y: 350,
+          bonusProfit: 10,
+        },
+        {
+          x: 55,
+          y: 180,
+          bonusProfit: 50,
+        },
+        {
+          x: canvas.width - 55,
+          y: 180,
+          bonusProfit: 50,
+        },
+        {
+          x: 150,
+          y: 320,
+          bonusProfit: 30,
+        },
+        {
+          x: canvas.width - 150,
+          y: 320,
+          bonusProfit: 30,
+        },
+      ];
 
-    const id = requestAnimationFrame(drawGame);
-    setGameId(id);
+      if (bonusAnim) {
+        if (bonusAnim.transparency <= 0) {
+          const randomIndex = Math.floor(Math.random() * 5);
+          setBonusAnim(null);
+          const newScore = bonus.bonusProfit + gameScore;
+          setGameScore(newScore);
+          setBonus({
+            x: bonusesCoord[randomIndex].x,
+            y: bonusesCoord[randomIndex].y,
+            transparency: 1,
+            outerRadius: bonusSize / 1.7,
+            innerRadius: bonusSize / 1.7 - 9,
+            bonusProfit: bonusesCoord[randomIndex].bonusProfit,
+          });
+        } else {
+          drawBonusAnim(ctx, '');
+        }
+      } else {
+        drawBonus(
+          ctx,
+          bonus.x,
+          bonus.y,
+          6,
+          bonus.outerRadius,
+          bonus.innerRadius,
+          bonus.transparency,
+          true,
+          bonus.bonusProfit,
+        );
+      }
+
+      if (checkBonusCollision()) {
+        setBonusAnim(bonus);
+      }
+
+      const id = requestAnimationFrame(drawGame);
+      setGameId(id);
+    } catch {}
   };
 
   const checkBonusCollision = () => {
@@ -511,13 +519,6 @@ function Pinball() {
     const distance = Math.sqrt(distanceX * distanceX + distanceY * distanceY);
 
     return distance < bonusSize / 2;
-  };
-
-  const handleBounce = () => {
-    //setBonusAnim(bonus);
-    if (ballRef.current) {
-      ballRef.current.position.x = 150;
-    }
   };
 
   const handleLeftFlipper = () => {

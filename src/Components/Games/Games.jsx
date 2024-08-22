@@ -6,6 +6,7 @@ import Snake from './Snake/Snake';
 import GameOver from './GameOver';
 import Sapper from './Sapper/Sapper';
 import Pinball from './Pinball/Pinball';
+import TickTackToe from './TickTackToe/TickTackToe';
 
 function Games() {
   const game = useSelector((state) => state.game.runningGame);
@@ -21,6 +22,8 @@ function Games() {
         return <GameOver />;
       case 'Pinball':
         return <Pinball />;
+      case 'TickTackToe':
+        return <TickTackToe />;
       default:
         return <></>;
     }
