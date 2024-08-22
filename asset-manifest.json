@@ -1,6 +1,6 @@
 {
   "files": {
-    "main.css": "/WebApp.github.io/static/css/main.b3e4e3db.css",
+    "main.css": "/WebApp.github.io/static/css/main.e372ae91.css",
     "main.js": "/WebApp.github.io/static/js/main.3159f8e7.js",
     "static/media/Friends.svg": "/WebApp.github.io/static/media/Friends.75f37a4fd3ad917fb44a.svg",
     "static/media/ShoppingCart.svg": "/WebApp.github.io/static/media/ShoppingCart.a48e189371867e595242.svg",
@@ -14,11 +14,11 @@
     "static/media/StarRusty.svg": "/WebApp.github.io/static/media/StarRusty.f0f09d722824454b9a77.svg",
     "static/media/StarWhite.svg": "/WebApp.github.io/static/media/StarWhite.66aa2fbc3a3ed106f284.svg",
     "static/media/StarYellow.svg": "/WebApp.github.io/static/media/StarYellow.13ede6f945c68f7050fb.svg",
-    "main.b3e4e3db.css.map": "/WebApp.github.io/static/css/main.b3e4e3db.css.map",
+    "main.e372ae91.css.map": "/WebApp.github.io/static/css/main.e372ae91.css.map",
     "main.3159f8e7.js.map": "/WebApp.github.io/static/js/main.3159f8e7.js.map"
   },
   "entrypoints": [
-    "static/css/main.b3e4e3db.css",
+    "static/css/main.e372ae91.css",
     "static/js/main.3159f8e7.js"
   ]
 }
